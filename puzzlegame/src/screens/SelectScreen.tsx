@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
-import type { PropsWithChildren } from 'react';
+import React from 'react';
 import { styles } from '../scripts/constants.js';
 import Images from '../assets/index.js'
 
 import {
     SafeAreaView,
     ScrollView,
-    StatusBar,
-    StyleSheet,
     Text,
-    useColorScheme,
-    View,
-    Button,
     Image,
     FlatList,
-    TouchableHighlight,
-    Pressable,
     TouchableOpacity
 } from 'react-native';
 

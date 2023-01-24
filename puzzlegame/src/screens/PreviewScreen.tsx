@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
-import type { PropsWithChildren } from 'react';
 import { styles } from '../scripts/constants.js';
 import { ActionSheetIOS } from 'react-native';
 
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View,
     Button,
     Image
 } from 'react-native';

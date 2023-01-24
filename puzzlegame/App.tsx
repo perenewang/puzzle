@@ -5,22 +5,10 @@
  * @format
  */
 
-import React, { useState } from 'react';
-import type {PropsWithChildren} from 'react';
+import React from 'react';
 import { styles } from './src/scripts/constants.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button
-} from 'react-native';
 
 
 import HomeScreen from './src/screens/HomeScreen';
@@ -38,11 +26,11 @@ function App(): JSX.Element {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home Screen" component={HomeScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Album Screen" component={AlbumScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Select Screen" component={SelectScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Preview Screen" component={PreviewScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Play Screen" component={PlayScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Win Screen" component={WinScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Album Screen" component={AlbumScreen} /> 
+        <Stack.Screen name="Select Screen" component={SelectScreen} />
+        <Stack.Screen name="Preview Screen" component={PreviewScreen} />
+        <Stack.Screen name="Play Screen" component={PlayScreen} />
+        <Stack.Screen name="Win Screen" component={WinScreen} />
       </Stack.Navigator>
     </NavigationContainer>
 
