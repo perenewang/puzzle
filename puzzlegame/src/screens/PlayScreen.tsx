@@ -9,18 +9,18 @@ import {
     Text,
     useColorScheme,
     View,
-    Button
+    Button,
+    Image,
+    Header
 } from 'react-native';
 
-function PlayScreen(): JSX.Element {
-    const [count, setCount] = useState(0);
+function PlayScreen({ navigation, route }): JSX.Element {
+    const {lvl, img_src} = route.params;
 
     return (
         <SafeAreaView>
-            <StatusBar />
-            <View>
-                <Button onPress={() => setCount(count + 1)} title={`Count : ${count}`} />
-            </View>
+          <Button title="Go Back" onPress={ () => navigation.navigate('Preview Screen', {img_src: img_src}) }/>
+
         </SafeAreaView>
     )
 }

@@ -41,10 +41,10 @@ function PreviewScreen({ navigation, route }): JSX.Element {
             },
         );
 
-    const playPress = () => navigation.navigate('Play Screen', {lvl: level});
+    const playPress = () => navigation.navigate('Play Screen', {lvl: level, img_src: img_src});
 
     // const sharePress = () => ;
-    
+
     return (
         <SafeAreaView style={styles.previewContainer}>
             <Image style={styles.previewImage} source={img_src} />
