@@ -9,8 +9,9 @@ export const styles = StyleSheet.create({
     },
 
     selectImages: {
-       width: "100%",
-       height: 200
+       width: "97%",
+       height: 200,
+       margin: 3
     },
 
     item: {
@@ -27,6 +28,10 @@ export const styles = StyleSheet.create({
     previewImage: {
         width: "90%",
         height: "85%",
-    }
+    },
+
+    level: {
+        backgroundColor: 'blue'
+    },
 
 })

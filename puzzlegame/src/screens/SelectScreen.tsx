@@ -59,9 +59,7 @@ const Item = ({ item, onPress }) => {
 
 function SelectScreen({ navigation }): JSX.Element {
 
-    const handleOnPress = (src) => {
-        navigation.navigate('Preview Screen', {img_src: src});
-    }
+    const handleOnPress = (src) => navigation.navigate('Preview Screen', {img_src: src});
 
     const renderItem = ({ item }) => {
         return (
@@ -74,14 +72,12 @@ function SelectScreen({ navigation }): JSX.Element {
 
     return (
         <SafeAreaView style = {styles.selectContainer} >
-            <ScrollView contentInsetAdjustmentBehavior='automatic'>
-                <FlatList
-                    data={itemData}
-                    numColumns={2}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.src}
-                />
-            </ScrollView>
+            <FlatList
+                data={itemData}
+                numColumns={2}
+                renderItem={renderItem}
+                keyExtractor={item => item.src}
+            />
         </SafeAreaView>
     )
 }
