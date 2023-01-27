@@ -34,4 +34,35 @@ export const styles = StyleSheet.create({
         backgroundColor: 'blue'
     },
 
+    stopwatch: {
+        container: {
+            backgroundColor: '#FF0000',
+            width: 100,
+            alignItems: 'center',
+        },
+        text: {
+            fontSize: 18,
+            color: '#FFF',
+        }
+    },
+
+    settingsIcon: {
+        width: 50,
+        height: 50,
+    },
+
+    settingsMenu: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100,
+        width: 100,
+        backgroundColor: "red",
+    },
+
+    closeButton: {
+        
+        
+
+    },
+
 })
