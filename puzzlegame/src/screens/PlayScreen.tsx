@@ -11,15 +11,12 @@ import {
     Button,
     Image,
     TouchableOpacity,
-    TouchableHighlight,
-    Modal,
-    Settings,
-    Pressable,
     View
 } from 'react-native';
 
 import SettingsMenu from '../components/SettingsMenu'
 import Pieces from '../components/Pieces'
+
 
 // to do:
 // SettingsMenu.tsx
@@ -55,6 +52,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
         numPieces = 15;
     }
 
+
+
     return (
         <SafeAreaView>
             <View style={styles.playScreenHeader}>
@@ -88,6 +87,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     {piecesVisible ? <Pieces /> : null}
                     {piecesVisible ? <Button title="X" onPress={() => setPiecesVisible(false)} /> : null}
                 </View>
+                
             </View>
             
             
