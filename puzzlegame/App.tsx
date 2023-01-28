@@ -29,7 +29,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Album Screen" component={AlbumScreen} /> 
         <Stack.Screen name="Select Screen" component={SelectScreen} />
         <Stack.Screen name="Preview Screen" component={PreviewScreen} />
-        <Stack.Screen name="Play Screen" component={PlayScreen} />
+        <Stack.Screen name="Play Screen" component={PlayScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Win Screen" component={WinScreen} />
       </Stack.Navigator>
     </NavigationContainer>

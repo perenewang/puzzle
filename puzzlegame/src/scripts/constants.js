@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 export const styles = StyleSheet.create({
 
@@ -46,22 +47,40 @@ export const styles = StyleSheet.create({
         }
     },
 
-    settingsIcon: {
-        width: 50,
-        height: 50,
+    internalSettingsMenu: {
+        height: 100,
+        width: 100,
+        backgroundColor: "red",
+
     },
 
     settingsMenu: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: 100,
-        width: 100,
-        backgroundColor: "red",
+        top: "30%",
+        
     },
 
     closeButton: {
         
         
+
+    },
+
+    playScreenHeader: {
+        backgroundColor: "blue",
+        flexDirection: "row",
+        height: 40,
+        alignItems: 'center',
+    },
+    
+    board: {
+        backgroundColor: "silver",
+        height: "100%",
+        width: "100%",
+    },
+
+    piecesPopup: {
 
     },
 

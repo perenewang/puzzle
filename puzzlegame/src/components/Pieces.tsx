@@ -16,11 +16,11 @@ import {
     View
 } from 'react-native';
 
-function SettingsMenu(): JSX.Element {
+function Pieces(): JSX.Element {
 
     return (
         <SafeAreaView>
-            <View style={styles.internalSettingsMenu}>
+            <View >
                 <Text>Hello There</Text>
             </View>
         </SafeAreaView>
@@ -28,4 +28,4 @@ function SettingsMenu(): JSX.Element {
 
 }
 
-export default SettingsMenu;
+export default Pieces;
