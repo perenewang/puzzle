@@ -68,7 +68,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     onPress={() => {
                         setPiecesVisible(true);
                     }}>
-                    <Image style={{ height: 30, width: 30 }} source={require("../assets/icons/piecesBag.png")} />
+                    <Image style={{ height: 35, width: 25 }} source={require("../assets/icons/piecesBag.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
