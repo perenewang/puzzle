@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import type { PropsWithChildren } from 'react';
 import { styles } from '../scripts/constants.js';
-import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
+import { Stopwatch } from 'react-native-stopwatch-timer';
+import { WebView } from 'react-native-webview';
 
 import {
     SafeAreaView,
@@ -62,7 +62,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
                 </TouchableOpacity>
                 <Text style={{color:"white", fontSize:20}}>{lvl}</Text>
-                <Stopwatch start={isStart} getTime={(time) => { console.log(time); }} options={styles.stopwatch} />
+                <Stopwatch start={isStart} options={styles.stopwatch} />
                 <TouchableOpacity
                     onPress={() => {
                         setPiecesVisible(true);
@@ -87,6 +87,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     {piecesVisible ? <Pieces /> : null}
                     {piecesVisible ? <Button title="X" onPress={() => setPiecesVisible(false)} /> : null}
                 </View>
+
+                <WebView originWhitelist={['*']} source={require('../scripts/puzzle.html')} />
                 
             </View>
             

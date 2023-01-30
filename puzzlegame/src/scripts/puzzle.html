@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+    <title>perene wang</title>
+    <script src="https://flbulgarelli.github.io/headbreaker/js/headbreaker.js"></script>
+</head>
+
+<body>
+    
+    <div id="puzzle"></div>
+
+
+
+
+</body>
+
+<script>
+    const autogen = new headbreaker.Canvas('puzzle', {
+        width: 800, height: 650,
+        pieceSize: 100, proximity: 20,
+        borderFill: 10, strokeWidth: 2, lineSoftness: 0.18,
+    });
+    autogen.autogenerate({
+        horizontalPiecesCount: 2,
+        verticalPiecesCount: 2,
+        metadata: [
+            { color: '#B83361' },
+            { color: '#B87D32' },
+            { color: '#A4C234' },
+            { color: '#37AB8C' }
+        ]
+    });
+    autogen.draw();
+</script>
+
+</html>
