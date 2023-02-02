@@ -77,7 +77,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     // useEffect(() => {
     //     loadPuzzle();
     // }), [isLoading];
-    
 
     return (
         
