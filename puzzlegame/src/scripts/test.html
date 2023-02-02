@@ -1,27 +1,38 @@
 
     <script src="https://flbulgarelli.github.io/headbreaker/js/headbreaker.js"></script>
-    <body>
-        <div id="puzzle">HIIIIIIIIIIIIIIII</div>
-        <h1>HIIIIIIIIIIIIII</h1>
+    <style>
+        div {
+            border: solid red 3px;
+        }
+        #puzzle {
+            align-items: center;
+        }
+    </style>
+    <body id="puzzle">
+    
     </body>
 
     <script>
         let xNum = 5;
+        let yNum = 6;
 
         let puzImg = new Image();
         puzImg.src = "../assets/defaults/muffin_dog.png";
-        let currWidth = puzImg.naturalWidth;
-        let currHeight = puzImg.naturalHeight;
-        let ratio = Math.floor(currWidth / xNum);
-        let yNum = Math.floor(currHeight / ratio);
 
         console.log(xNum);
         console.log(yNum);
 
+        let ratio = window.devicePixelRatio || 1;
+        let w = 900;
+        let h = 800;
+
+        console.log(w)
+        console.log(h)
+
         puzImg.onload = () => {
             const canvas = new headbreaker.Canvas('puzzle', {
-                width: 650, height: 800,
-                pieceSize: 50, proximity: 20,
+                width: w, height: h,
+                pieceSize: 100, proximity: 20,
                 borderFill: 10, strokeWidth: 2,
                 lineSoftness: 0.12, image: puzImg,
                 outline: new headbreaker.outline.Rounded(),
@@ -34,8 +45,8 @@
             canvas.adjustImagesToPuzzleHeight();
             // canvas.adjustImagesToPuzzleWidth();
             canvas.autogenerate({
-                verticalPiecesCount: yNum,
                 horizontalPiecesCount: xNum,
+                verticalPiecesCount: yNum,
             });
             canvas.draw();
             }

@@ -12,7 +12,9 @@ import {
     Button,
     Image,
     TouchableOpacity,
-    View
+    View,
+    Dimensions,
+    useWindowDimensions
 } from 'react-native';
 
 import SettingsMenu from '../components/SettingsMenu'
@@ -31,7 +33,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const [isStart, setIsStart] = useState(true);
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [piecesVisible, setPiecesVisible] = useState(false);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
     const pause = () => {
         if (isStart) {
@@ -54,29 +56,31 @@ function PlayScreen({ navigation, route }): JSX.Element {
         num_pieces = 15;
     }
     const img = "../assets/defaults/muffin_dog.png";
+    const dimensions = useWindowDimensions();
+    // const width = Dimensions.get('screen').width;
+    // const height = Dimensions.get('screen').height - 50;
 
-    // const loadPuzzle = async () => {
-    //     let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
-    //     let requestBody = {
-    //         "img_src": img,
-    //         "num_pieces": num_pieces
-    //     };
-    //     await axios.post(puzzleEndpoint, 
-    //         JSON.stringify(requestBody), 
-    //         { headers: { "Content-Type": "application/json" } 
-    //         }).then((response) => {
-    //             console.log(response);
-    //             setLoading(false);
-    //     }).catch((error) => console.log(error));
-    // };
-
-    // console.log("hello");
-
+    const loadPuzzle = async () => {
+        let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
+        let requestBody = {
+            "img_src": img,
+            "num_pieces": num_pieces,
+            "width": dimensions.width,
+            "height": dimensions.height
+        };
+        await axios.post(puzzleEndpoint, 
+            JSON.stringify(requestBody), 
+            { headers: { "Content-Type": "application/json" } 
+            }).then((response) => {
+                console.log(response);
+                setLoading(false);
+        }).catch((error) => console.log(error));
+    };
     
 
-    // useEffect(() => {
-    //     loadPuzzle();
-    // }), [isLoading];
+    useEffect(() => {
+        loadPuzzle();
+    }), [isLoading];
 
     return (
         
