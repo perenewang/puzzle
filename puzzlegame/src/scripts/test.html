@@ -1,0 +1,23 @@
+
+    <body>
+        <div id="puzzle"></div>
+    </body>
+
+    <script>
+        let puzImg = new Image();
+        puzImg.src = "../assets/defaults/muffin_dog.png";
+        puzImg.onload = () => {
+            const canvas = new headbreaker.Canvas('puzzle', {
+                width: 800, height: 800, pieceSize: 100, 
+                outline: new headbreaker.outline.Rounded(), image: puzImg,
+                preventOffstageDrag: true, fixed: true
+            });
+            canvas.autogenerate({
+                horizontalPiecesCount: 5,
+                verticalPiecesCount: 5,
+            });
+            canvas.shuffle(0.7);
+            canvas.draw();
+            }
+        </script>
+        

@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div id="my-canvas"></div>
+    <div id="puzzle"></div>
 </body>
 
 <script>
@@ -40,7 +40,7 @@
     let dali = new Image();
     dali.src = '../assets/defaults/malta.png';
     dali.onload = () => {
-        const canvas = new headbreaker.Canvas('my-canvas', {
+        const canvas = new headbreaker.Canvas('puzzle', {
             width: 800, height: 800, pieceSize: 100, 
             outline: new headbreaker.outline.Rounded(), image: dali,
             preventOffstageDrag: true, fixed: true
