@@ -1,22 +1,42 @@
 
+    <script src="https://flbulgarelli.github.io/headbreaker/js/headbreaker.js"></script>
     <body>
-        <div id="puzzle"></div>
+        <div id="puzzle">HIIIIIIIIIIIIIIII</div>
+        <h1>HIIIIIIIIIIIIII</h1>
     </body>
 
     <script>
+        let xNum = 5;
+
         let puzImg = new Image();
         puzImg.src = "../assets/defaults/muffin_dog.png";
+        let currWidth = puzImg.naturalWidth;
+        let currHeight = puzImg.naturalHeight;
+        let ratio = Math.floor(currWidth / xNum);
+        let yNum = Math.floor(currHeight / ratio);
+
+        console.log(xNum);
+        console.log(yNum);
+
         puzImg.onload = () => {
             const canvas = new headbreaker.Canvas('puzzle', {
-                width: 800, height: 800, pieceSize: 100, 
-                outline: new headbreaker.outline.Rounded(), image: puzImg,
-                preventOffstageDrag: true, fixed: true
+                width: 650, height: 800,
+                pieceSize: 50, proximity: 20,
+                borderFill: 10, strokeWidth: 2,
+                lineSoftness: 0.12, image: puzImg,
+                outline: new headbreaker.outline.Rounded(),
+                // optional, but it must be set in order to activate image scaling
+                maxPiecesCount: {x:30, y:40}, 
+                //puzzleDiameter: {x:200, y:500}
+
             });
+
+            canvas.adjustImagesToPuzzleHeight();
+            // canvas.adjustImagesToPuzzleWidth();
             canvas.autogenerate({
-                horizontalPiecesCount: 5,
-                verticalPiecesCount: 5,
+                verticalPiecesCount: yNum,
+                horizontalPiecesCount: xNum,
             });
-            canvas.shuffle(0.7);
             canvas.draw();
             }
         </script>

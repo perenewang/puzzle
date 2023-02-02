@@ -31,7 +31,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const [isStart, setIsStart] = useState(true);
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [piecesVisible, setPiecesVisible] = useState(false);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
 
     const pause = () => {
         if (isStart) {
@@ -55,28 +55,28 @@ function PlayScreen({ navigation, route }): JSX.Element {
     }
     const img = "../assets/defaults/muffin_dog.png";
 
-    const loadPuzzle = async () => {
-        let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
-        let requestBody = {
-            "img_src": img,
-            "num_pieces": num_pieces
-        };
-        await axios.post(puzzleEndpoint, 
-            JSON.stringify(requestBody), 
-            { headers: { "Content-Type": "application/json" } 
-            }).then((response) => {
-                console.log(response);
-                setLoading(false);
-        }).catch((error) => console.log(error));
-    };
+    // const loadPuzzle = async () => {
+    //     let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
+    //     let requestBody = {
+    //         "img_src": img,
+    //         "num_pieces": num_pieces
+    //     };
+    //     await axios.post(puzzleEndpoint, 
+    //         JSON.stringify(requestBody), 
+    //         { headers: { "Content-Type": "application/json" } 
+    //         }).then((response) => {
+    //             console.log(response);
+    //             setLoading(false);
+    //     }).catch((error) => console.log(error));
+    // };
 
-    console.log("hello");
+    // console.log("hello");
 
     
 
-    useEffect(() => {
-        loadPuzzle();
-    }), [];
+    // useEffect(() => {
+    //     loadPuzzle();
+    // }), [isLoading];
     
 
     return (
