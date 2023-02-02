@@ -36,7 +36,7 @@ function PreviewScreen({ navigation, route }): JSX.Element {
 
     const playPress = () => navigation.navigate('Play Screen', {lvl: level, img_src: img_src});
 
-    // const sharePress = () => ;
+    const sharePress = () => navigation.navigate('Home Screen');
 
     return (
         <SafeAreaView style={styles.previewContainer}>
@@ -44,7 +44,7 @@ function PreviewScreen({ navigation, route }): JSX.Element {
 
             <Button style={styles.level} onPress={levelPress} title={"Level: " + level}/>
             <Button style={styles.level} onPress={playPress} title="Play" />
-            <Button style={styles.level} onPress={playPress} title="Share" />
+            <Button style={styles.level} onPress={sharePress} title="Share" />
 
         </SafeAreaView>
     )

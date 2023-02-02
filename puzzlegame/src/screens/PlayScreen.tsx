@@ -64,7 +64,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
         await axios.post(puzzleEndpoint, 
             JSON.stringify(requestBody), 
             { headers: { "Content-Type": "application/json" } 
-            }).then(() => {
+            }).then((response) => {
+                console.log(response);
                 setLoading(false);
         }).catch((error) => console.log(error));
     };
@@ -75,7 +76,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
     useEffect(() => {
         loadPuzzle();
-    });
+    }), [];
     
 
     return (
