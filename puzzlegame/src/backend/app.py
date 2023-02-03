@@ -12,8 +12,6 @@ def index():
 
 @app.route('/createPuzzle', methods = ['POST'])
 def createPuzzle():
-    windowWidth = request.json["width"]
-    windowHeight = request.json["height"]
     imgSrc = "%s" % (request.json["img_src"])
     xNum = request.json["num_pieces"]
     img = Image.open(request.json["img_src"])
@@ -49,7 +47,7 @@ def createPuzzle():
 
         puzImg.onload = () => {
             const canvas = new headbreaker.Canvas('puzzle', {
-                width: %s, height: %s,
+                width: 800, height: 800,
                 pieceSize: 100, proximity: 20,
                 borderFill: 10, strokeWidth: 2,
                 lineSoftness: 0.12, image: puzImg,
@@ -69,7 +67,7 @@ def createPuzzle():
             canvas.draw();
             }
         </script>
-        """ % (xNum, yNum, imgSrc, windowWidth, windowHeight)
+        """ % (xNum, yNum, imgSrc)
     file = open("../scripts/test.html", "w")
     file.write(html)
     return "completed"

@@ -56,17 +56,13 @@ function PlayScreen({ navigation, route }): JSX.Element {
         num_pieces = 15;
     }
     const img = "../assets/defaults/muffin_dog.png";
-    const dimensions = useWindowDimensions();
-    // const width = Dimensions.get('screen').width;
-    // const height = Dimensions.get('screen').height - 50;
+
 
     const loadPuzzle = async () => {
         let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
         let requestBody = {
             "img_src": img,
-            "num_pieces": num_pieces,
-            "width": dimensions.width,
-            "height": dimensions.height
+            "num_pieces": num_pieces
         };
         await axios.post(puzzleEndpoint, 
             JSON.stringify(requestBody), 

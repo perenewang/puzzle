@@ -22,28 +22,21 @@
         console.log(xNum);
         console.log(yNum);
 
-        let ratio = window.devicePixelRatio || 1;
-        let w = 900;
-        let h = 800;
-
-        console.log(w)
-        console.log(h)
 
         puzImg.onload = () => {
             const canvas = new headbreaker.Canvas('puzzle', {
-                width: w, height: h,
+                width: 950, height: 990,
                 pieceSize: 100, proximity: 20,
                 borderFill: 10, strokeWidth: 2,
                 lineSoftness: 0.12, image: puzImg,
                 outline: new headbreaker.outline.Rounded(),
                 // optional, but it must be set in order to activate image scaling
-                maxPiecesCount: {x:30, y:40}, 
-                //puzzleDiameter: {x:200, y:500}
+                maxPiecesCount: 500
 
             });
 
             canvas.adjustImagesToPuzzleHeight();
-            // canvas.adjustImagesToPuzzleWidth();
+            canvas.adjustImagesToPuzzleWidth();
             canvas.autogenerate({
                 horizontalPiecesCount: xNum,
                 verticalPiecesCount: yNum,
