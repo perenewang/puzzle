@@ -3,6 +3,8 @@ import { styles } from '../scripts/constants.js';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
+import {JigsawGenerator} from '../backend/puzzle-generator';
+import Svg, { Path } from "react-native-svg";
 
 import {
     SafeAreaView,
@@ -56,27 +58,59 @@ function PlayScreen({ navigation, route }): JSX.Element {
         num_pieces = 15;
     }
     const img = "../assets/defaults/muffin_dog.png";
-
-
-    const loadPuzzle = async () => {
-        let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
-        let requestBody = {
-            "img_src": img,
-            "num_pieces": num_pieces
+    
+    const gen = () => {
+        const out = new JigsawGenerator({ width: 60, height: 100, xCount: 3, yCount: 5, radius: 20, fixedPattern: false });
+        let cells = out["cells"];
+        let pieces = [];
+        let k = 0;
+        for (let i = 0; i < cells.length; i++) {
+            for (let j = 0; j < cells[i].length; j++) {
+                let p = cells[i][j];
+                pieces.push(
+                    < Svg
+                        width={60}
+                        height={100}
+                        fill="none"
+                        key={k}
+                    >
+                        <Path
+                            d={p}
+                            stroke="black"
+                            strokeWidth={3}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </Svg >
+                );
+                k++;
+            }   
         };
-        await axios.post(puzzleEndpoint, 
-            JSON.stringify(requestBody), 
-            { headers: { "Content-Type": "application/json" } 
-            }).then((response) => {
-                console.log(response);
-                setLoading(false);
-        }).catch((error) => console.log(error));
+        return pieces;
     };
     
+    
 
-    useEffect(() => {
-        loadPuzzle();
-    }), [isLoading];
+
+    // const loadPuzzle = async () => {
+    //     let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
+    //     let requestBody = {
+    //         "img_src": img,
+    //         "num_pieces": num_pieces
+    //     };
+    //     await axios.post(puzzleEndpoint, 
+    //         JSON.stringify(requestBody), 
+    //         { headers: { "Content-Type": "application/json" } 
+    //         }).then((response) => {
+    //             console.log(response);
+    //             setLoading(false);
+    //     }).catch((error) => console.log(error));
+    // };
+    
+
+    // useEffect(() => {
+    //     loadPuzzle();
+    // }), [isLoading];
 
     return (
         
@@ -102,9 +136,9 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         <Image style={{ height: 25, width: 25 }} source={require("../assets/icons/settings.png")} />
                     </TouchableOpacity>
                 </View>
-            {isLoading ? (
+            {/* {isLoading ? (
                 <Text> LOADING ...</Text>
-            ) : (
+            ) : ( */}
                 <View style={styles.board}>
                     <View style={styles.settingsMenu}>
                         {settingsVisible ? <SettingsMenu /> : null}
@@ -115,10 +149,13 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         {piecesVisible ? <Button title="X" onPress={() => setPiecesVisible(false)} /> : null}
                     </View>
 
+                    {gen()}
+
                     {/* <WebView originWhitelist={['*']} source={require('../scripts/puzzle.html')} /> */}
-                    <WebView originWhitelist={['*']} source={require("../scripts/test.html")} />
+                    {/* <WebView originWhitelist={['*']} source={require("../scripts/test.html")} /> */}
                 </View>
-            )}
+                
+            {/* )} */}
                 
             </SafeAreaView>
     );
