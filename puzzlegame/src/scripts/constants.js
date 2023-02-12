@@ -72,6 +72,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         height: 40,
         alignItems: 'center',
+        zIndex: 100
     },
     
     board: {
@@ -83,5 +84,6 @@ export const styles = StyleSheet.create({
     piecesPopup: {
 
     },
+
 
 })
