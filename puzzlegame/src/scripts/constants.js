@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
 
     previewImage: {
         width: "90%",
-        height: "85%",
+        height: "80%",
     },
 
     level: {
