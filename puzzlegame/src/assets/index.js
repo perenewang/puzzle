@@ -5,6 +5,9 @@ const Images = {
         malta: require('./defaults/malta.png'),
         muffin: require('./defaults/muffin_dog.png'),
         otis: require('./defaults/otis_dog.png')
+    },
+    icons: {
+        choose: require('./icons/choose_icon.png')
     }
 }
 

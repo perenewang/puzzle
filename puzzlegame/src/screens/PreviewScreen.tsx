@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { styles } from '../scripts/constants.js';
-import { ActionSheetIOS } from 'react-native';
 
 import {
     SafeAreaView,
     Button,
-    Image
+    Image,
+    ActionSheetIOS
 } from 'react-native';
 
 function PreviewScreen({ navigation, route }): JSX.Element {
