@@ -5,7 +5,7 @@ import axios from 'axios';
 import {JigsawGenerator} from '../backend/puzzle-generator';
 import * as SVG from "react-native-svg";
 import Draggable from 'react-native-draggable';
-import testSVG from './test.svg'
+
 
 import {
     SafeAreaView,
@@ -27,11 +27,12 @@ import { transformer } from '../../metro.config.js';
 
 
 // TO DO:
-// - make draggable
 // - click correct pieces
+// - put pieces in collapsable view, but make sure once you drag one out of scope of view, 
+//      it stays where it is rather than disapearing when view is collapsed again
 // - determine if puzzle is finished —> give win screen —> add to album
 // - share buttons
-// - import photos from camera roll
+// - settings popup
 
 let PIECES:any[] = []
 
@@ -64,23 +65,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     }
     let xC = Math.floor((yC * 2) / 3);
 
-    // const pan = useRef(new Animated.ValueXY()).current;
-
-    // const panResponder = useRef(
-    //     PanResponder.create({
-    //         onMoveShouldSetPanResponder: () => true,
-    //         onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
-    //         onPanResponderRelease: () => {
-    //             pan.extractOffset();
-    //         },
-    //     }),
-    // ).current;
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderGrant: () => {
-            console.log("hello");
-        },
-    });
 
     const gen = () => {
         let width = 390-10, height = 550-10;
@@ -101,7 +85,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                 let shiftTop = Math.random() * (bot_bound - top_bound) + top_bound;
                 let shiftLeft = Math.random() * (right_bound - left_bound) + left_bound;
                 pieces.push(
-                    <Draggable>
+                    <Draggable key={k}>
                         <SVG.Svg
                             width={width}
                             height={height}
@@ -162,7 +146,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     // useEffect(() => {
     //     loadPuzzle();
     // }), [isLoading];
-    const p = gen();
+
 
     return (
         
@@ -199,7 +183,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
                     </View>
                     <View style={styles.piecesPopup}>
-                        {piecesVisible ? <Pieces /> : null}
+                        {piecesVisible ? <Pieces run={route.params.run} xC={xC} yC={yC} img_src={img_src} /> : null}
                         {piecesVisible ? <Button title="X" onPress={() => setPiecesVisible(false)} /> : null}
                     </View>
 
