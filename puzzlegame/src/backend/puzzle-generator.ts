@@ -148,22 +148,6 @@ export class JigsawGenerator {
         return Math.round((n + Number.EPSILON) * c) / c;
     }
 
-    // toSvgElements() {
-    //     const result: SVGPathElement[] = [];
-    //     //const fragment = parent != null ? document.createDocumentFragment() : null;
-    //     for (let y = 0; y < this.cells.length; y++) {
-    //         const row = this.cells[y];
-    //         for (let x = 0; x < row.length; x++) {
-    //             const elm = document.createElementNS(NS_SVG, 'path');
-    //             elm.setAttribute('d', row[x]);
-    //             elm.id = `p-${x}-${y}`;
-    //             result.push(elm);
-    //             //fragment?.appendChild(elm);
-    //         }
-    //     }
-    //     //parent?.appendChild(fragment!);
-    //     return result;
-    // }
 
     getSeed(seed: any): number {
     switch (typeof seed) {

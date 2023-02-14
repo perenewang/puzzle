@@ -35,7 +35,6 @@ function PreviewScreen({ navigation, route }): JSX.Element {
         );
 
     const playPress = () => navigation.navigate('Play Screen', {lvl: level, img_src: img_src, run: false});
-
     const sharePress = () => navigation.navigate('Home Screen');
 
     return (

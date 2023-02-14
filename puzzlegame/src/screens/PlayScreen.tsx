@@ -5,7 +5,7 @@ import axios from 'axios';
 import {JigsawGenerator} from '../backend/puzzle-generator';
 import * as SVG from "react-native-svg";
 import Draggable from 'react-native-draggable';
-
+import testSVG from './test.svg'
 
 import {
     SafeAreaView,
@@ -107,34 +107,29 @@ function PlayScreen({ navigation, route }): JSX.Element {
                             height={height}
                             fill="none"
                             key={k}
-                            style={{ zIndex: -100, top: shiftTop, left: shiftLeft, position: "absolute" }}
+                            style={{ zIndex: -100, overflow: "hidden", top: shiftTop, left: shiftLeft, position: "absolute" }}
                         >
                             <SVG.Defs>
-                                <SVG.ClipPath id="clip" >
-                                <SVG.G >
-                                        <SVG.Path
-                                            d={p}
-                                            stroke="black"
-                                            strokeWidth={3}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </SVG.G>
-                                </SVG.ClipPath>
+                                <SVG.Pattern id="img1" width={width} height={height}>
+                                    <SVG.Image 
+                                        width={width}
+                                        height={height}
+                                        x="0"
+                                        y="0"
+                                        preserveAspectRatio="xMidYMid slice"
+                                        href={img_src}
+                                    />
+                                </SVG.Pattern>
+                                
                             </SVG.Defs>
-                            {/* <SVG.G transform={[{translateX: -50}, {translateY: -50}]}> */}
-                            
-                                <SVG.Image
-                                    width={width}
-                                    height={height}
-                                    preserveAspectRatio="xMidYMid slice"
-                                    href={img_src}
-                                    clipPath="url(#clip)"
-
-                                />
-                            
-                            
-                                {/* </SVG.G> */}
+                            <SVG.Path
+                                d={p}
+                                stroke="black"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                fill="url(#img1)"
+                            />
                         </SVG.Svg>
                     </Draggable>
                 );
@@ -143,7 +138,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
         };
         route.params.run = true;
         return pieces;
-        //return cells[1][1];
     };
     
     PIECES = route.params.run ? PIECES : gen();
@@ -168,6 +162,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     // useEffect(() => {
     //     loadPuzzle();
     // }), [isLoading];
+    const p = gen();
 
     return (
         
@@ -210,7 +205,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                     {PIECES}
                     
-                
                 </View>
                 
             {/* )} */}
