@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { styles } from '../scripts/constants.js';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import axios from 'axios';
 import {JigsawGenerator} from '../backend/puzzle-generator';
 import * as SVG from "react-native-svg";
+import Draggable from 'react-native-draggable';
 
 
 import {
@@ -15,18 +16,22 @@ import {
     Image,
     TouchableOpacity,
     View,
-    Dimensions,
-    useWindowDimensions
+    PanResponder,
+    Animated,
+    Alert
 } from 'react-native';
 
 import SettingsMenu from '../components/SettingsMenu'
 import Pieces from '../components/Pieces'
+import { transformer } from '../../metro.config.js';
 
 
-// to do:
-// SettingsMenu.tsx
-// Pieces.tsx 
-// style close button for settings and pieces popups
+// TO DO:
+// - make draggable
+// - click correct pieces
+// - determine if puzzle is finished —> give win screen —> add to album
+// - share buttons
+// - import photos from camera roll
 
 let PIECES:any[] = []
 
@@ -59,6 +64,24 @@ function PlayScreen({ navigation, route }): JSX.Element {
     }
     let xC = Math.floor((yC * 2) / 3);
 
+    // const pan = useRef(new Animated.ValueXY()).current;
+
+    // const panResponder = useRef(
+    //     PanResponder.create({
+    //         onMoveShouldSetPanResponder: () => true,
+    //         onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
+    //         onPanResponderRelease: () => {
+    //             pan.extractOffset();
+    //         },
+    //     }),
+    // ).current;
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderGrant: () => {
+            console.log("hello");
+        },
+    });
+
     const gen = () => {
         let width = 390-10, height = 550-10;
         let piece_width = Math.floor(width / xC), piece_height = Math.floor(height / yC);
@@ -78,42 +101,49 @@ function PlayScreen({ navigation, route }): JSX.Element {
                 let shiftTop = Math.random() * (bot_bound - top_bound) + top_bound;
                 let shiftLeft = Math.random() * (right_bound - left_bound) + left_bound;
                 pieces.push(
-                    <SVG.Svg
-                        width={width}
-                        height={height}
-                        fill="none"
-                        key={k}
-                        style={{ zIndex: -100, top: shiftTop, left: shiftLeft, position: "absolute" }}
-                    >
-                    <SVG.Defs>
-                        <SVG.ClipPath id="clip">
-                            <SVG.Path
-                                d={p}
-                                stroke="black"
-                                strokeWidth={3}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </SVG.ClipPath>
-                    </SVG.Defs>
-                        
-                        <SVG.Image
-                            // x="5%"
-                            // y="5%"
+                    <Draggable>
+                        <SVG.Svg
                             width={width}
                             height={height}
-                            preserveAspectRatio="xMidYMid slice"
-                            // opacity="0.5"
-                            href={img_src}
-                            clipPath="url(#clip)"
-                        />
-                    </SVG.Svg >
+                            fill="none"
+                            key={k}
+                            style={{ zIndex: -100, top: shiftTop, left: shiftLeft, position: "absolute" }}
+                        >
+                            <SVG.Defs>
+                                <SVG.ClipPath id="clip" >
+                                <SVG.G >
+                                        <SVG.Path
+                                            d={p}
+                                            stroke="black"
+                                            strokeWidth={3}
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </SVG.G>
+                                </SVG.ClipPath>
+                            </SVG.Defs>
+                            {/* <SVG.G transform={[{translateX: -50}, {translateY: -50}]}> */}
+                            
+                                <SVG.Image
+                                    width={width}
+                                    height={height}
+                                    preserveAspectRatio="xMidYMid slice"
+                                    href={img_src}
+                                    clipPath="url(#clip)"
+
+                                />
+                            
+                            
+                                {/* </SVG.G> */}
+                        </SVG.Svg>
+                    </Draggable>
                 );
                 k++;
             }   
         };
         route.params.run = true;
         return pieces;
+        //return cells[1][1];
     };
     
     PIECES = route.params.run ? PIECES : gen();
@@ -180,6 +210,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                     {PIECES}
                     
+                
                 </View>
                 
             {/* )} */}
