@@ -34,10 +34,13 @@ import { transformer } from '../../metro.config.js';
 // - share buttons
 // - settings popup
 
-let PIECES:any[] = []
+
+let PIECES: any[] = []
+let visiblePieces: any[] = [];
+// let bagPieces: any[] = PIECES;
 
 function PlayScreen({ navigation, route }): JSX.Element {
-    let {lvl, img_src, run} = route.params;
+    let {lvl, img_src} = route.params;
     const [isStart, setIsStart] = useState(true);
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [piecesVisible, setPiecesVisible] = useState(false);
@@ -52,7 +55,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
         }
     }
 
-    let yC:number = 0;
+    
+    let yC: number = 0;
 
     if (lvl === "Easy") {
         yC = 5;
@@ -65,9 +69,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
     }
     let xC = Math.floor((yC * 2) / 3);
 
-
     const gen = () => {
-        let width = 390-10, height = 550-10;
+        let width = 390 - 10, height = 550 - 10;
         let piece_width = Math.floor(width / xC), piece_height = Math.floor(height / yC);
         const out = new JigsawGenerator({ width: width, height: height, xCount: xC, yCount: yC, radius: 20, fixedPattern: false });
         let cells = out["cells"];
@@ -81,11 +84,23 @@ function PlayScreen({ navigation, route }): JSX.Element {
                 let left_bound = -(j * piece_width);
                 let right_bound = (width - (j * piece_width) - piece_width);
                 let top_bound = - (i * piece_height);
-                let bot_bound = (height - (i * piece_height) - piece_height); 
+                let bot_bound = (height - (i * piece_height) - piece_height);
                 let shiftTop = Math.random() * (bot_bound - top_bound) + top_bound;
                 let shiftLeft = Math.random() * (right_bound - left_bound) + left_bound;
                 pieces.push(
-                    <Draggable key={k}>
+                    // <Draggable 
+                    //     key={k}
+                    //     onDragRelease={(e, ges, bounds) => {
+                    //         // if y coordinate is below threshold of bag, append this to 
+                    //         // visible pieces and remove from bagPieces
+                    //         // { fx, fy, width, height, px, py } = this.measure()
+                    //         console.log("drag release");
+                    //         console.log(ges["moveY"]);
+                    //         if (ges["moveY"] > 630) {
+                    //             visiblePieces.push(this)
+                    //         }
+                    //     }}
+                    // >
                         <SVG.Svg
                             width={width}
                             height={height}
@@ -95,7 +110,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         >
                             <SVG.Defs>
                                 <SVG.Pattern id="img1" width={width} height={height}>
-                                    <SVG.Image 
+                                    <SVG.Image
                                         width={width}
                                         height={height}
                                         x="0"
@@ -104,7 +119,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                         href={img_src}
                                     />
                                 </SVG.Pattern>
-                                
+
                             </SVG.Defs>
                             <SVG.Path
                                 d={p}
@@ -115,16 +130,22 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                 fill="url(#img1)"
                             />
                         </SVG.Svg>
-                    </Draggable>
+                    // </Draggable>
                 );
                 k++;
-            }   
+            }
         };
         route.params.run = true;
         return pieces;
     };
-    
+
     PIECES = route.params.run ? PIECES : gen();
+    visiblePieces = route.params.run ? visiblePieces : [];
+        
+
+    
+    
+
 
 
     // const loadPuzzle = async () => {
@@ -147,7 +168,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     //     loadPuzzle();
     // }), [isLoading];
 
-
     return (
         
         <SafeAreaView>
@@ -155,6 +175,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('Preview Screen', { img_src: img_src });
+
                         }}>
                         <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
                     </TouchableOpacity>
@@ -177,19 +198,64 @@ function PlayScreen({ navigation, route }): JSX.Element {
             {/* {isLoading ? (
                 <Text> LOADING ...</Text>
             ) : ( */}
-                <View style={styles.board}>
+                {/* <View style={styles.board}> */}
                     <View style={styles.settingsMenu}>
                         {settingsVisible ? <SettingsMenu /> : null}
                         {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
                     </View>
-                    <View style={styles.piecesPopup}>
-                        {piecesVisible ? <Pieces run={route.params.run} xC={xC} yC={yC} img_src={img_src} /> : null}
-                        {piecesVisible ? <Button title="X" onPress={() => setPiecesVisible(false)} /> : null}
-                    </View>
-
-                    {PIECES}
+                    {piecesVisible ? (
+                        <View style={{borderWidth: 5, height: 550, width: 390, top: 1}}> 
+                            {PIECES.map(piece => {
+                                return (
+                                    <Draggable
+                                        onDragRelease={(e, ges, bounds) => {
+                                            // if y coordinate is below threshold of bag, append this to
+                                            // visiblePieces and remove from bagPieces
+                                            console.log("drag release");
+                                            console.log(ges["moveY"]);
+                                            if (ges["moveY"] > 630) {
+                                                visiblePieces.push(piece);
+                                                console.log("should push");
+                                                // need to remove from PIECES
+                                            }
+                                        }}>
+                                        {piece}
+                                        
+                                    </Draggable>
+                                )
+                            })
+                            }
+                            <Button title="X" onPress={() => setPiecesVisible(false)} /> 
+                        </View>
+                        ) : (
+                        <View>
+                            {visiblePieces.map(piece => {
+                                return (
+                                <View style={{ 
+                                    position: "absolute", 
+                                    borderWidth: 5, 
+                                    width: 50, 
+                                    height: 50, 
+                                    top:50, 
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}> 
+                                    <Draggable >
+                                        {piece}
+                                    </Draggable>
+                                </View>
+                                )
+                            })
+                            }
+                        </View>
+                        )}
+                        
                     
-                </View>
+                    
+
+                    {/* {PIECES} */}
+                    
+                {/* </View> */}
                 
             {/* )} */}
                 

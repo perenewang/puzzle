@@ -79,6 +79,8 @@ export const styles = StyleSheet.create({
         backgroundColor: "silver",
         height: "100%",
         width: "100%",
+        // justifyContent: 'center',
+        alignItems: 'center',
     },
 
     piecesPopup: {

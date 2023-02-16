@@ -16,6 +16,7 @@ import AlbumScreen from './src/screens/AlbumScreen';
 import SelectScreen from './src/screens/SelectScreen';
 import PreviewScreen from './src/screens/PreviewScreen';
 import PlayScreen from './src/screens/PlayScreen';
+// import PlayScreen from './src/screens/temp';
 import WinScreen from './src/screens/WinScreen';
 
 
