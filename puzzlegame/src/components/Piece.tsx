@@ -4,18 +4,21 @@ import * as SVG from "react-native-svg";
 
 // Class to display a single puzzle piece
 // Props include
-//   visible : Bool (TODO)  - Boolean controlling if the piece is on the board (True) or in the pieces bag (False)
+//   visible : boolean      - Boolean controlling if the piece is on the board (True) or in the pieces bag (False)
+//   z : number             - z-index of each piece
 //   width : number         - Width of the completed puzzle
 //   height : number        - Height of the completed puzzle
-//   k : number             - Number key acting as identifier for the piece
+//   k : string             - key acting as identifier for the piece ("i-j")
 //   p : string             - String defining path of SVG shape
 //   top : number           - Top displacement
 //   left : number          - Left displacement
 //   img_src: string        - String defining path of image source
-class Piece extends Component<{}, {width : number, height : number, key : number, path : string, top : number, left : number, img_src : string}> {
+class Piece extends Component<{}, {visible: boolean, z : number, width : number, height : number, key : string, path : string, top : number, left : number, img_src : string}> {
     constructor(props : any){
         super(props);
         this.state= {
+            visible: props.visible,
+            z: props.z,
             width: props.width,
             height: props.height,
             key: props.k,
@@ -26,11 +29,60 @@ class Piece extends Component<{}, {width : number, height : number, key : number
         };
     }
 
-    updateCoords(left : number, top : number) {
-        this.setState({
+    getVis = () => {
+        return this.state.visible;
+    }
+    
+    getKey = () => {
+        return this.state.key;
+    }
+    getLeft = () => {
+        return this.state.left;
+    }
+    getTop = () => {
+        return this.state.top;
+    }
+
+    updateCoords = (left : number, top : number) => {
+        this.state = {
+            visible: this.state.visible,
+            z: this.state.z,
+            width: this.state.width,
+            height: this.state.height,
+            key: this.state.key,
+            path: this.state.path,
+            top: top,
             left: left,
-            top: top
-        });
+            img_src: this.state.img_src
+        }
+    }
+    
+    updateVis(vis: boolean) {
+        this.state = {
+            visible: vis,
+            z: this.state.z,
+            width: this.state.width,
+            height: this.state.height,
+            key: this.state.key,
+            path: this.state.path,
+            top: this.state.top,
+            left: this.state.left,
+            img_src: this.state.img_src
+        };
+    }
+
+    updateZ(z: number) {
+        this.state = {
+            visible: this.state.visible,
+            z: z,
+            width: this.state.width,
+            height: this.state.height,
+            key: this.state.key,
+            path: this.state.path,
+            top: this.state.top,
+            left: this.state.left,
+            img_src: this.state.img_src
+        };
     }
 
     render(){
@@ -40,10 +92,12 @@ class Piece extends Component<{}, {width : number, height : number, key : number
                 height={this.state.height}
                 fill="none"
                 key={this.state.key}
-                style={{ zIndex: -100, overflow: "hidden", top: this.state.top, left: this.state.left, position: "absolute" }}
+                style={{ zIndex: this.state.z, overflow: "hidden", position: "absolute", top: this.state.top, left: this.state.left }}
             >
                 <SVG.Defs>
+                    
                     <SVG.Pattern id="img1" width={this.state.width} height={this.state.height}>
+                        
                         <SVG.Image
                             width={this.state.width}
                             height={this.state.height}
@@ -53,16 +107,21 @@ class Piece extends Component<{}, {width : number, height : number, key : number
                             href={this.state.img_src}
                         />
                     </SVG.Pattern>
+                    
 
                 </SVG.Defs>
-                <SVG.Path
-                    d={this.state.path}
-                    stroke="black"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="url(#img1)"
-                />
+                {/* <SVG.G transform={[{ translateX: this.state.left }, { translateY: this.state.top }]}></SVG.G> */}
+                    <SVG.Path
+                        d={this.state.path}
+                        stroke="black"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fill="url(#img1)"
+                    />
+
+                
+                
             </SVG.Svg>
         );
     }
