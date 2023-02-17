@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 
 import SettingsMenu from '../components/SettingsMenu'
+import Piece from '../components/Piece'
 import Pieces from '../components/Pieces'
 import { transformer } from '../../metro.config.js';
 
@@ -87,6 +88,17 @@ function PlayScreen({ navigation, route }): JSX.Element {
                 let bot_bound = (height - (i * piece_height) - piece_height);
                 let shiftTop = Math.random() * (bot_bound - top_bound) + top_bound;
                 let shiftLeft = Math.random() * (right_bound - left_bound) + left_bound;
+
+                const pieceProps = {
+                    width: width,
+                    height: height,
+                    k: k,
+                    p: p,
+                    top: shiftTop,
+                    left: shiftLeft,
+                    img_src: img_src
+                }
+
                 pieces.push(
                     // <Draggable 
                     //     key={k}
@@ -101,35 +113,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     //         }
                     //     }}
                     // >
-                        <SVG.Svg
-                            width={width}
-                            height={height}
-                            fill="none"
-                            key={k}
-                            style={{ zIndex: -100, overflow: "hidden", top: shiftTop, left: shiftLeft, position: "absolute" }}
-                        >
-                            <SVG.Defs>
-                                <SVG.Pattern id="img1" width={width} height={height}>
-                                    <SVG.Image
-                                        width={width}
-                                        height={height}
-                                        x="0"
-                                        y="0"
-                                        preserveAspectRatio="xMidYMid slice"
-                                        href={img_src}
-                                    />
-                                </SVG.Pattern>
-
-                            </SVG.Defs>
-                            <SVG.Path
-                                d={p}
-                                stroke="black"
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                fill="url(#img1)"
-                            />
-                        </SVG.Svg>
+                        <Piece {...pieceProps}/>
                     // </Draggable>
                 );
                 k++;
@@ -217,6 +201,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 visiblePieces.push(piece);
                                                 console.log("should push");
                                                 // need to remove from PIECES
+                                                // reset its left and top values to current left and top 
                                             }
                                         }}>
                                         {piece}
