@@ -74,7 +74,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
         for (let i = 0; i < cells.length; i++) {
             for (let j = 0; j < cells[i].length; j++) {
-                let k = "" + i.toString() + "-" + j.toString();
+                let k = i.toString() + "-" + j.toString();
                 // let k = {row: i, column: j};
                 let p = cells[i][j];
 
@@ -248,11 +248,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                             }
                         </View>
                         )}
-                        
-                    
-                    
-
-                    {/* {PIECES} */}
                     
                 {/* </View> */}
                 
