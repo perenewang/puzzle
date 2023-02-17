@@ -111,11 +111,34 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const click = (piece:Piece) => {
         let k = piece.getKey().split('-');
         console.log(k);
+        let row = parseInt(k[0]);
+        let col = parseInt(k[1]);
         for (let i = 0; i < PIECES.length; i++) {
-            let checkK = PIECES[i].getKey().split('-');
-            
+            let temp = PIECES[i].getKey().split('-');
+            // console.log(temp);
+            let tempRow = parseInt(temp[0]);
+            let tempCol = parseInt(temp[1]);
+            let leftDif = Math.abs(piece.getLeft() - PIECES[i].getLeft());
+            let topDif = Math.abs(piece.getTop() - PIECES[i].getTop());
+            // need to seperate if they are next to each other or on top of each other
+            if (row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) { // next to each other
+                // console.log("pieces next to each other");
+                // console.log(piece.getTop());
+                // console.log(PIECES[i].getTop());
+                // console.log(leftDif);
+                // console.log(topDif);
+                if (topDif <= 1 && leftDif <= 200 ) { // do math to see leftDif comparison (something with piece width)
+                    return true;
+                }
+            } else if (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow)) { //on top of each other
+                // console.log(leftDif);
+                // console.log(topDif);
+                if (leftDif <= 1 && topDif <= 200) { // do math to see topDif comparison (something with piece height)
+                    return true;
+                }
+            }
         }
-        return true;
+        return false;
     }
 
 
@@ -208,6 +231,9 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                         <Draggable
                                             key={piece.getKey()}
                                             onDragRelease={(e, ges, bounds) => {
+                                                let l = piece.getLeft()
+                                                let t = piece.getTop();
+                                                piece.updateCoords(l + ges["dx"], t + ges["dy"])
                                                 if (click(piece)) {
                                                     console.log("should click");
                                                 }
