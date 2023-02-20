@@ -127,13 +127,13 @@ function PlayScreen({ navigation, route }): JSX.Element {
                 // console.log(PIECES[i].getTop());
                 // console.log(leftDif);
                 // console.log(topDif);
-                if (topDif <= 1 && leftDif <= 200 ) { // do math to see leftDif comparison (something with piece width)
+                if (topDif <= 5 && leftDif <= 5 ) { // do math to see leftDif comparison (something with piece width)
                     return true;
                 }
             } else if (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow)) { //on top of each other
                 // console.log(leftDif);
                 // console.log(topDif);
-                if (leftDif <= 1 && topDif <= 200) { // do math to see topDif comparison (something with piece height)
+                if (leftDif <= 5 && topDif <= 5) { // do math to see topDif comparison (something with piece height)
                     return true;
                 }
             }
