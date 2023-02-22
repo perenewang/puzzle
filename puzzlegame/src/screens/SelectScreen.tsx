@@ -105,13 +105,13 @@ function SelectScreen({ navigation }): JSX.Element {
                 console.log('Error Message: ', response.errorMessage);
             } else if (response.assets) {
                 console.log(response.assets[0]["uri"]);
-                navigation.navigate('Preview Screen', { img_src: {uri: response.assets[0]["uri"]} });
+                navigation.navigate('Preview', { img_src: {uri: response.assets[0]["uri"]} });
             }
         });
 
     };
 
-    const handleOnPress = (src) => navigation.navigate('Preview Screen', {img_src: src});
+    const handleOnPress = (src) => navigation.navigate('Preview', {img_src: src});
 
     const renderItem = ({ item }) => {
         return (

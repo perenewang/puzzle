@@ -14,9 +14,9 @@ function HomeScreen({navigation}): JSX.Element {
     return (
         <SafeAreaView>
             <Button title="New Game" 
-                    onPress={() => navigation.navigate('Select Screen')} />
+                    onPress={() => navigation.navigate('Select')} />
             <Button title="Album"
-                onPress={() => navigation.navigate('Album Screen')} />
+                onPress={() => navigation.navigate('Album')} />
         </SafeAreaView>
     )
 }

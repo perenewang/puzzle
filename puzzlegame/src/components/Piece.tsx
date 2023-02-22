@@ -25,9 +25,36 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
             path: props.p,
             top: props.top,
             left: props.left,
-            img_src: props.img_src
+            img_src: props.img_src,
         };
+        
+        
     }
+
+    
+
+    // private _isMounted = false;
+
+    // componentDidMount() {
+    //     this._isMounted = true;
+    // }
+
+    // handlePress = () => {
+    //     if (this._isMounted) { // check if the component is mounted before calling forceUpdate()
+    //         this.forceUpdate();
+    //     }
+    // };
+
+
+    // componentWillUnmount() {
+    //     this._isMounted = false;
+    // }
+
+
+    // componentDidMount() {
+    //     this.updateVis = this.updateVis.bind(this);
+    //     this.updateCoords = this.updateCoords.bind(this);
+    // }
 
     getVis = () => {
         return this.state.visible;
@@ -43,38 +70,34 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
         return this.state.top;
     }
 
-    updateCoords = (left : number, top : number) => {
-        this.state = {
-            visible: this.state.visible,
-            z: this.state.z,
-            width: this.state.width,
-            height: this.state.height,
-            key: this.state.key,
-            path: this.state.path,
-            top: top,
-            left: left,
-            img_src: this.state.img_src
-        }
+    updateCoords = (l : number, t : number) => {
+        // this.state = {
+        //     visible: this.state.visible,
+        //     z: this.state.z,
+        //     width: this.state.width,
+        //     height: this.state.height,
+        //     key: this.state.key,
+        //     path: this.state.path,
+        //     top: top,
+        //     left: left,
+        //     img_src: this.state.img_src,
+        // };
+
+       
+
+        this.setState({
+            left: l,
+            top: t
+        })
+        
+
+        return true;
     }
     
     updateVis(vis: boolean) {
         this.state = {
             visible: vis,
             z: this.state.z,
-            width: this.state.width,
-            height: this.state.height,
-            key: this.state.key,
-            path: this.state.path,
-            top: this.state.top,
-            left: this.state.left,
-            img_src: this.state.img_src
-        };
-    }
-
-    updateZ(z: number) {
-        this.state = {
-            visible: this.state.visible,
-            z: z,
             width: this.state.width,
             height: this.state.height,
             key: this.state.key,
