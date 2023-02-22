@@ -46,6 +46,9 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const [test, setTest] = useState(true);
     const [currPiece, setCurrPiece] = useState();
 
+    const [key, setKey] = useState("temp");
+    // const [renderPiece, setRenderPiece] = useState(true);
+
     const forceUpdate = useCallback(() => setTest(!test), [])
 
     let src = img_src
@@ -285,6 +288,13 @@ function PlayScreen({ navigation, route }): JSX.Element {
     //     loadPuzzle();
     // }), [isLoading];
 
+    const [piecePositions, setPiecePositions] = useState(
+        data.reduce((positions, item) => {
+            positions[item.key] = { left: item.left, top: item.top };
+            return positions;
+        }, {})
+    );
+    
     return (
         <SafeAreaView>
                 <View style={styles.playScreenHeader}>
@@ -354,18 +364,25 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     console.log("should stay");
                                                     // componentRefs[index]?.current?.updateVis(true);
                                                     item.visible= true;
-                                                    let l = item.left;
-                                                    let t = item.top;
-                                                    // let l = componentRefs[index]?.current?.getLeft();
-                                                    // let t = componentRefs[index]?.current?.getTop();
-                                                    item.left = l + ges["dx"];
-                                                    item.top = t + ges["dy"];
-                                                    // componentRefs[index]?.current?.updateCoords(l + ges["dx"], t + ges["dy"]);
-
+                                                    
                                                 }
                                                 else {
                                                     item.visible = false;
                                                 }
+
+                                                let l = item.left;
+                                                let t = item.top;
+                                                // let l = componentRefs[index]?.current?.getLeft();
+                                                // let t = componentRefs[index]?.current?.getTop();
+                                                item.left = l + ges["dx"];
+                                                item.top = t + ges["dy"];
+                                                setPiecePositions({
+                                                    ...piecePositions,
+                                                    [item.key]: { left: item.left, top: item.top }
+                                                });
+                                                // componentRefs[index]?.current?.updateCoords(l + ges["dx"], t + ges["dy"]);
+                                                // const newCoords = { left: l + ges["dx"], top: t + ges["dy"] };
+                                                // setPieceCoords(pieceCoords.map((coord, i) => (i === index ? newCoords : coord)));
                                             }}
                                         >
                                             <Piece {...item} ref={componentRefs[index]}/>
@@ -379,36 +396,11 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         ) : (
                         <View>
                             {data.map((item, index) => {
-                                // if (piece.getVis()) {
-                                //     return (
-                                //         <Draggable
-                                //             key={piece.getKey()}
-                                //             onDragRelease={(e, ges, bounds) => {
-
-                                //                 let l = piece.getLeft();
-                                //                 let t = piece.getTop();
-                                //                 piece.updateCoords(l + ges["dx"], t + ges["dy"]);
-                                            
-                                //                 if (click(piece)) {
-                                //                     console.log("should click");
-                                //                     piece.updateCoords(0,0);
-                                //                     piece.handlePress();
-
-                                //                 }
-                                    
-                                //             }}
-                                            
-                                            
-                                //             >
-                                //             {piece.render()}
-                                           
-
-                                //         </Draggable>
-                                //     )
-                                // }
+                                
                                 if (item.visible) {
                                     console.log(item.key);
                                     console.log(item.top);
+                                    // setRenderPiece(true);
                                     return (
                                         <Draggable
                                             key={item.key}
@@ -417,6 +409,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 let t = item.top;
                                                 item.left = l + ges["dx"];
                                                 item.top = t + ges["dy"];
+                                                // const newCoords = { left: l + ges["dx"], top: t + ges["dy"] };
+                                                // setPieceCoords(pieceCoords.map((coord, i) => (i === index ? newCoords : coord)));
                                                 // componentRefs[index]?.current?.updateCoords(l + ges["dx"], t + ges["dy"]);
                                                 // let l = componentRefs[index]?.current?.getLeft();
                                                 // let t = componentRefs[index]?.current?.getTop();
@@ -431,7 +425,26 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     console.log("should click");
                                                     item.top = 0;
                                                     item.left = 0;
-                                                    forceUpdate();
+                                                    // componentRefs[index]?.current?.updateCoords(0,0);
+                                                    // setRenderPiece(false);
+                                                    // renderPiece = false;
+                                                    // setKey(item.key)
+                                                    setPiecePositions({
+                                                        ...piecePositions,
+                                                        [item.key]: { left: 0, top: 0 }
+                                                    });
+                                                } else {
+                                                    setPiecePositions({
+                                                        ...piecePositions,
+                                                        [item.key]: { left: item.left, top: item.top }
+                                                    });
+                                                
+
+                                                    // const updatedCoords = { left: item.left, top: item.top };
+                                                    // setPieceCoords(pieceCoords.map((coord, i) => (i === index ? updatedCoords : coord)));
+                                                    
+
+                                                    // forceUpdate();
                                                     // callUpdateCoords(index, 0, 0);
                                                     // componentRefs[index]?.current?.setState((prevState) => ({
                                                     //     ...prevState,
@@ -453,7 +466,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             }}
 
                                         >
-                                            <Piece {...item} ref={componentRefs[index]} />
+                                            <Piece {...item} left={piecePositions[item.key].left}
+                                                top={piecePositions[item.key].top} ref={componentRefs[index]} />
 
                                         </Draggable>
                                     )
