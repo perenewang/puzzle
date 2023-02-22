@@ -31,7 +31,18 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
         
     }
 
-    
+    componentDidMount() {
+        console.log("Piece has mounted.")
+    }
+
+    componentWillUnmount() {
+        console.log("Piece is unmounting.")
+    }
+
+    componentDidUpdate() {
+        console.log("Piece has updated.")
+        console.log(this.state.top, this.state.left);
+    }
 
     // private _isMounted = false;
 
