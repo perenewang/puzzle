@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { styles } from '../scripts/constants.js';
 import { Stopwatch } from 'react-native-stopwatch-timer';
-import axios from 'axios';
 import {JigsawGenerator} from '../backend/puzzle-generator';
-import * as SVG from "react-native-svg";
 import Draggable from 'react-native-draggable';
 import Images from '../assets/index.js'
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
@@ -11,16 +9,11 @@ import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     Text,
     Button,
     Image,
     TouchableOpacity,
     View,
-    PanResponder,
-    Animated,
-    Alert
 } from 'react-native';
 
 import SettingsMenu from '../components/SettingsMenu'
@@ -28,9 +21,7 @@ import Piece from '../components/Piece'
 
 
 // TO DO:
-// - click correct pieces
 // - determine if puzzle is finished —> give win screen —> add to album
-// - share buttons
 // - settings popup
 // - CSS
 
@@ -82,10 +73,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
         yC = 5;
     }
     else if (lvl === "Medium") {
-        yC = 10;
+        yC = 8;
     }
     else {
-        yC = 15;
+        yC = 12;
     }
     let xC = Math.floor((yC * 2) / 3);
 
@@ -145,8 +136,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
             let temp = data[i].key.split('-');
             let tempRow = parseInt(temp[0]);
             let tempCol = parseInt(temp[1]);
-            // need to seperate if they are next to each other or on top of each other
-            if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) ||
+            if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
                 (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
                 let leftDif = Math.abs(data[index].left - data[i].left);
                 let topDif = Math.abs(data[index].top - data[i].top);
@@ -242,21 +232,16 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 let t = item.top;
                                                 item.left = l + ges["dx"];
                                                 item.top = t + ges["dy"];
-                                                let temp = [...keys];
-                                                temp[index] = index;
-                                                setKeys(temp);
+                                                componentRefs[index]?.current?.updateCoords(item.left, item.top);
                                                 
                                                 let clicked = click(index)
                                                 if (clicked !== -1) {
                                                     console.log("should click");
-                                                    
+
                                                     item.top = data[clicked].top;
                                                     item.left = data[clicked].left;
                                                     componentRefs[index]?.current?.updateCoords(item.left, item.top);
                                                     
-                                                    let temp = [...keys];
-                                                    temp[index] = item.key;
-                                                    setKeys(temp);
 
                                                     // const options = {
                                                     //     enableVibrateFallback: true,
@@ -265,6 +250,15 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     // ReactNativeHapticFeedback.trigger("impactLight", options);
                                                 }
+
+                                                let temp = [...keys];
+                                                if (temp[index] === index) {
+                                                    temp[index] = item.key
+                                                }
+                                                else {
+                                                    temp[index] = index;
+                                                }
+                                                setKeys(temp);
 
                                             }}
 
