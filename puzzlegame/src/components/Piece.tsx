@@ -44,29 +44,6 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
         console.log(this.state.top, this.state.left);
     }
 
-    // private _isMounted = false;
-
-    // componentDidMount() {
-    //     this._isMounted = true;
-    // }
-
-    // handlePress = () => {
-    //     if (this._isMounted) { // check if the component is mounted before calling forceUpdate()
-    //         this.forceUpdate();
-    //     }
-    // };
-
-
-    // componentWillUnmount() {
-    //     this._isMounted = false;
-    // }
-
-
-    // componentDidMount() {
-    //     this.updateVis = this.updateVis.bind(this);
-    //     this.updateCoords = this.updateCoords.bind(this);
-    // }
-
     getVis = () => {
         return this.state.visible;
     }
@@ -82,19 +59,6 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
     }
 
     updateCoords = (l : number, t : number) => {
-        // this.state = {
-        //     visible: this.state.visible,
-        //     z: this.state.z,
-        //     width: this.state.width,
-        //     height: this.state.height,
-        //     key: this.state.key,
-        //     path: this.state.path,
-        //     top: top,
-        //     left: left,
-        //     img_src: this.state.img_src,
-        // };
-
-       
 
         this.setState({
             left: l,
@@ -144,7 +108,6 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
                     
 
                 </SVG.Defs>
-                {/* <SVG.G transform={[{ translateX: this.state.left }, { translateY: this.state.top }]}></SVG.G> */}
                     <SVG.Path
                         d={this.state.path}
                         stroke="black"

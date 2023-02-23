@@ -6,6 +6,7 @@ import {JigsawGenerator} from '../backend/puzzle-generator';
 import * as SVG from "react-native-svg";
 import Draggable from 'react-native-draggable';
 import Images from '../assets/index.js'
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 
 import {
@@ -43,13 +44,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [piecesVisible, setPiecesVisible] = useState(false);
     const [isLoading, setLoading] = useState(true);
-    const [test, setTest] = useState(true);
-    const [currPiece, setCurrPiece] = useState();
-
-    
-    // const [renderPiece, setRenderPiece] = useState(true);
-
-    const forceUpdate = useCallback(() => setTest(!test), [])
 
     let src = img_src
     if (img_src == 1) {
@@ -71,43 +65,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
     }
     
-
-    // const pieceRef = useRef<Piece>(null);
-
-    // const callGetVis = (index: number) => {
-    //     console.log(componentRefs[index].current);
-    //     if (componentRefs[index].current) {
-    //         return componentRefs[index].current.getVis();
-    //     }
-    // }
-
-    // const callGetLeft = (index: number) => {
-    //     if (componentRefs[index].current) {
-    //         return componentRefs[index].current.getLeft();
-    //     }
-    // }
-
-    // const callGetTop = (index: number) => {
-    //     if (pieceRef.current) {
-    //         return pieceRef.current.getTop();
-    //     }
-    // }
-
-    // const callGetKey = (index: number) => {
-    //     if (pieceRef.current) {
-    //         return pieceRef.current.getKey();
-    //     }
-    // }
-
-    // const callUpdateVis = (index: number, vis: boolean) => {
-    //     if (pieceRef.current) {
-    //         return pieceRef.current.updateVis(vis);
-    //     }
-    // }
-
-    const callUpdateCoords = (index: number, left: number, top: number) => {
-        return componentRefs[index]?.current?.updateCoords(left, top);
-    }
 
     const pause = () => {
         if (isStart) {
@@ -167,13 +124,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     img_src: src
                 }
 
-                // pieces.push(
-                //     new Piece({ ...pieceProps })
-                // );
-                // const ref = useRef<Piece>(null);
-                // pieces.push(
-                //     <Piece ref={pieceRef} {...pieceProps} />
-                // );
                 pieces.push(pieceProps);
             }
         };
@@ -184,51 +134,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     data = route.params.run ? data : gen();
     const componentRefs = data.map((item) => useRef<Piece>(null));
 
-    // PIECES = route.params.run ? PIECES : gen();
-
-    // useEffect(() => {
-    //     data = data;
-    // },[data]);
-
-
-    // const click = (piece:Piece) => {
-    //     let res = false;
-    //     let k = piece.getKey().split('-');
-    //     console.log(k);
-    //     let row = parseInt(k[0]);
-    //     let col = parseInt(k[1]);
-    //     for (let i = 0; i < PIECES.length; i++) {
-    //         let temp = PIECES[i].getKey().split('-');
-    //         // console.log(temp);
-    //         let tempRow = parseInt(temp[0]);
-    //         let tempCol = parseInt(temp[1]);
-    //         let leftDif = Math.abs(piece.getLeft() - PIECES[i].getLeft());
-    //         let topDif = Math.abs(piece.getTop() - PIECES[i].getTop());
-    //         // need to seperate if they are next to each other or on top of each other
-    //         if (row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) { // next to each other
-    //             // console.log("pieces next to each other");
-    //             // console.log(piece.getTop());
-    //             // console.log(PIECES[i].getTop());
-    //             // console.log(leftDif);
-    //             // console.log(topDif);
-    //             if (topDif <= 5 && leftDif <= 5 ) { // do math to see leftDif comparison (something with piece width)
-    //                 res= true;
-    //             }
-    //         } else if (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow)) { //on top of each other
-    //             // console.log(leftDif);
-    //             // console.log(topDif);
-    //             if (leftDif <= 5 && topDif <= 5) { // do math to see topDif comparison (something with piece height)
-    //                 res= true;
-    //             }
-    //         }
-    //     }
-    //     // if (res) {
-    //     // console.log("click");
-    //     // piece.updateCoords(0,0);
-    //     // setTest(!test);
-    //     // }
-    //     return res;
-    // }
 
     const click = (index:number) => {
         let res = false;
@@ -238,58 +143,21 @@ function PlayScreen({ navigation, route }): JSX.Element {
         let col = parseInt(k[1]);
         for (let i = 0; i < data.length; i++) {
             let temp = data[i].key.split('-');
-            // console.log(temp);
             let tempRow = parseInt(temp[0]);
             let tempCol = parseInt(temp[1]);
-            let leftDif = Math.abs(data[index].left - data[i].left);
-            let topDif = Math.abs(data[index].top - data[i].top);
             // need to seperate if they are next to each other or on top of each other
-            if (row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) { // next to each other
-                // console.log("pieces next to each other");
-                // console.log(piece.getTop());
-                // console.log(PIECES[i].getTop());
-                // console.log(leftDif);
-                // console.log(topDif);
-                if (topDif <= 5 && leftDif <= 5 ) { // do math to see leftDif comparison (something with piece width)
-                    res= true;
-                }
-            } else if (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow)) { //on top of each other
-                // console.log(leftDif);
-                // console.log(topDif);
-                if (leftDif <= 5 && topDif <= 5) { // do math to see topDif comparison (something with piece height)
-                    res= true;
+            if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) ||
+                (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
+                let leftDif = Math.abs(data[index].left - data[i].left);
+                let topDif = Math.abs(data[index].top - data[i].top);
+                if (topDif <= 12 && leftDif <= 12 ) { 
+                    res = true;
+                    return i;
                 }
             }
         }
-        // if (res) {
-        // console.log("click");
-        // piece.updateCoords(0,0);
-        // setTest(!test);
-        // }
-        return res;
+        return -1;
     }
-
-
-    // const loadPuzzle = async () => {
-    //     let puzzleEndpoint = `http://127.0.0.1:5000/createPuzzle`;
-    //     let requestBody = {
-    //         "img_src": img,
-    //         "num_pieces": num_pieces
-    //     };
-    //     await axios.post(puzzleEndpoint, 
-    //         JSON.stringify(requestBody), 
-    //         { headers: { "Content-Type": "application/json" } 
-    //         }).then((response) => {
-    //             console.log(response);
-    //             setLoading(false);
-    //     }).catch((error) => console.log(error));
-    // };
-    
-
-    // useEffect(() => {
-    //     loadPuzzle();
-    // }), [isLoading];
-
 
     
     return (
@@ -329,28 +197,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     {piecesVisible && PIECES ? (
                         <View style={{borderWidth: 5, height: 550, width: 390, top: 1, }}> 
                             {data.map((item, index) => {
-                                // if (!piece.getVis()) {
-                                //     return (
-                                //         <Draggable
-                                //             key={piece.getKey()}
-                                //             onDragRelease={(e, ges, bounds) => {
-                                //                 console.log("drag release");
-                                //                 if (ges["moveY"] > 630) {
-                                //                     console.log("should stay");
-                                //                     piece.updateVis(true);
-                                //                     let l = piece.getLeft();
-                                //                     let t = piece.getTop();
-                                //                     piece.updateCoords(l + ges["dx"], t + ges["dy"]);
-                            
-                                //                 }
-                                //             }}
-                                //             >
-                                //             {piece.render()}
-                                            
-                                //         </Draggable>
-                                //     )
-                                // }
-                                if (!item.visible) {//(!componentRefs[index]?.current?.getVis()) {
+                                if (!item.visible) {
                                     
                                     return (
                                         <Draggable
@@ -359,7 +206,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 console.log("drag release");
                                                 if (ges["moveY"] > 630) {
                                                     console.log("should stay");
-                                                    // componentRefs[index]?.current?.updateVis(true);
                                                     item.visible= true;
                                                     
                                                 }
@@ -369,14 +215,9 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                 let l = item.left;
                                                 let t = item.top;
-                                                // let l = componentRefs[index]?.current?.getLeft();
-                                                // let t = componentRefs[index]?.current?.getTop();
                                                 item.left = l + ges["dx"];
                                                 item.top = t + ges["dy"];
                                                 
-                                                // componentRefs[index]?.current?.updateCoords(l + ges["dx"], t + ges["dy"]);
-                                                // const newCoords = { left: l + ges["dx"], top: t + ges["dy"] };
-                                                // setPieceCoords(pieceCoords.map((coord, i) => (i === index ? newCoords : coord)));
                                             }}
                                         >
                                             <Piece {...item} ref={componentRefs[index]}/>
@@ -392,9 +233,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                             {data.map((item, index) => {
                                 
                                 if (item.visible) {
-                                    console.log(item.key);
-                                    console.log(item.top);
-                                    // setRenderPiece(true);
+
                                     return (
                                         <Draggable
                                             key={keys[index]}
@@ -403,55 +242,28 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 let t = item.top;
                                                 item.left = l + ges["dx"];
                                                 item.top = t + ges["dy"];
-                                                // const newCoords = { left: l + ges["dx"], top: t + ges["dy"] };
-                                                // setPieceCoords(pieceCoords.map((coord, i) => (i === index ? newCoords : coord)));
-                                                // componentRefs[index]?.current?.updateCoords(l + ges["dx"], t + ges["dy"]);
-                                                // let l = componentRefs[index]?.current?.getLeft();
-                                                // let t = componentRefs[index]?.current?.getTop();
-                                                // console.log(l);
-                                                // console.log(t);
-
-                                                // let l = callGetLeft();
-                                                // let t = callGetTop();
-                                                // callUpdateCoords(l + ges["dx"], t + ges["dy"]);
-
-                                                if (click(index)) {
+                                                let temp = [...keys];
+                                                temp[index] = index;
+                                                setKeys(temp);
+                                                
+                                                let clicked = click(index)
+                                                if (clicked !== -1) {
                                                     console.log("should click");
-                                                    item.top = 0;
-                                                    item.left = 0;
-                                                    componentRefs[index]?.current?.updateCoords(0,0);
-                                                    //componentRefs[index]?.current?.componentWillUnmount();
+                                                    
+                                                    item.top = data[clicked].top;
+                                                    item.left = data[clicked].left;
+                                                    componentRefs[index]?.current?.updateCoords(item.left, item.top);
+                                                    
                                                     let temp = [...keys];
                                                     temp[index] = item.key;
                                                     setKeys(temp);
-                                                    //componentRefs[index]?.current?.componentDidMount();
-                                                    // setRenderPiece(false);
-                                                    // renderPiece = false;
-                                                    // setKey(item.key)
-                                                   
-                                                
 
-                                                    // const updatedCoords = { left: item.left, top: item.top };
-                                                    // setPieceCoords(pieceCoords.map((coord, i) => (i === index ? updatedCoords : coord)));
-                                                    
+                                                    // const options = {
+                                                    //     enableVibrateFallback: true,
+                                                    //     ignoreAndroidSystemSettings: false
+                                                    // };
 
-                                                    // forceUpdate();
-                                                    // callUpdateCoords(index, 0, 0);
-                                                    // componentRefs[index]?.current?.setState((prevState) => ({
-                                                    //     ...prevState,
-                                                    //     left: 0,
-                                                    //     top: 0}), () => {
-                                                    //         forceUpdate();
-                                                    //     });
-                                                    // }, () => {
-                                                    //     console.log(componentRefs[index]?.current?.getLeft());
-                                                    //     console.log(componentRefs[index]?.current?.getTop());
-                                                    //     forceUpdate();
-                                                    // });
-                                                    
-                                                    // componentRefs[index]?.current?.forceUpdate();
-                                                
-
+                                                    // ReactNativeHapticFeedback.trigger("impactLight", options);
                                                 }
 
                                             }}
@@ -462,8 +274,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                         </Draggable>
                                     )
                                 }
-                            })
-                            }
+                            })}
                         </View>
                         )}
                     
