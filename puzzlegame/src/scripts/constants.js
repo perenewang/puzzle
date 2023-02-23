@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
 
     previewImage: {
         width: "90%",
-        height: "85%",
+        height: "80%",
     },
 
     level: {
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         top: "30%",
-        
+        zIndex: 100
     },
 
     closeButton: {
@@ -72,12 +72,15 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         height: 40,
         alignItems: 'center',
+        zIndex: 100
     },
     
     board: {
         backgroundColor: "silver",
         height: "100%",
         width: "100%",
+        // justifyContent: 'center',
+        alignItems: 'center',
     },
 
     piecesPopup: {

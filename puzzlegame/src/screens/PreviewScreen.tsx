@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { styles } from '../scripts/constants.js';
-import { ActionSheetIOS } from 'react-native';
+import Images from '../assets/index.js'
 
 import {
     SafeAreaView,
     Button,
-    Image
+    Image,
+    ActionSheetIOS,
+    Linking,
+    Share,
+    Alert
 } from 'react-native';
+
 
 function PreviewScreen({ navigation, route }): JSX.Element {
     const {img_src} = route.params;
-
     const [level, setLevel] = useState('Easy');
+    
 
     const levelPress = () =>
         ActionSheetIOS.showActionSheetWithOptions(
@@ -33,10 +38,38 @@ function PreviewScreen({ navigation, route }): JSX.Element {
                 }
             },
         );
+    
+    
 
-    const playPress = () => navigation.navigate('Play Screen', {lvl: level, img_src: img_src});
+    const playPress = () => navigation.navigate('Play', {lvl: level, img_src: img_src, run: false});
+    // const url_params = "puzzlegame://play/" + level + "/" + JSON.stringify(src) + "/" + "false"
+    const url_params = "puzzlegame://preview/" + img_src 
+    const sharePress = async () => {
+        try {
+            const result = await Share.share({
+                message:
+                    '',
+                url: url_params
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error: any) {
+            Alert.alert(error.message);
+        }
+    };
 
-    const sharePress = () => navigation.navigate('Home Screen');
+    // const onShare = async () => {
+    //     Share.share({
+    //         message: `Check out the puzzle at puzzlegame://play/${level}/${img_src}/false`,
+    //     });
+    // };
 
     return (
         <SafeAreaView style={styles.previewContainer}>
