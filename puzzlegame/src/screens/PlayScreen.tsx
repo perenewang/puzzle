@@ -25,7 +25,12 @@ import Piece from '../components/Piece'
 // - settings popup
 // - CSS
 
+
+// - update click function to filter through data and groups
+// - somewhere if piece clicks, remove from data and put into group, or if group click group, merge groups
+
 let data: any[] = [];
+let groups: any[] = [];
 
 function PlayScreen({ navigation, route }): JSX.Element {
     let {lvl, img_src, run} = route.params;
@@ -219,7 +224,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         ) : (
                         <View>
                             {data.map((item, index) => {
-                                
                                 if (item.visible) {
 
                                     return (
@@ -267,6 +271,23 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                     )
                                 }
                             })}
+                            {groups.map((group, index) => {
+
+                                return (
+                                    <Draggable
+                                        key={index}
+                                        onDragRelease={(e, ges, bounds) => {
+
+                                        }}
+                                    >
+                                        {group.map((item:any, i:number) => {
+                                            return (<Piece {...item}/>)
+                                        })}
+                                    </Draggable>
+                                )
+                            })
+
+                            }
                         </View>
                         )}
                     
