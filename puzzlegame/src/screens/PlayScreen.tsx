@@ -52,8 +52,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
     else if (img_src == 5) {
         src = Images.default_imgs.otis
     }
-    else {
-
+    else if (img_src == 6) {
+        src = Images.default_imgs.puzzle
     }
     
 

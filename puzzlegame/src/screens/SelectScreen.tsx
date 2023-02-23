@@ -51,6 +51,12 @@ const itemData = [
         img: (
             <Image style={styles.selectImages} source={Images.default_imgs.otis} />
         )
+    },
+    {
+        src: Images.default_imgs.puzzle,
+        img: (
+            <Image style={styles.selectImages} source={Images.default_imgs.puzzle} />
+        )
     }
 ];
 
