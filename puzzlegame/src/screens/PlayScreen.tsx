@@ -25,8 +25,6 @@ import Piece from '../components/Piece'
 // - settings popup
 // - CSS
 
-
-let PIECES: any[] = [];
 let data: any[] = [];
 
 function PlayScreen({ navigation, route }): JSX.Element {
@@ -184,7 +182,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         {settingsVisible ? <SettingsMenu /> : null}
                         {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
                     </View>
-                    {piecesVisible && PIECES ? (
+                    {piecesVisible ? (
                         <View style={{borderWidth: 5, height: 550, width: 390, top: 1, }}> 
                             {data.map((item, index) => {
                                 if (!item.visible) {
