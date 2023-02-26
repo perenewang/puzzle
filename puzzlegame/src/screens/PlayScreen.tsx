@@ -84,6 +84,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     let xC = Math.floor((yC * 2) / 3);
 
     const [keys, setKeys] = useState(Array.from(Array(xC*yC).keys()));
+    const [groupKeys, setGroupKeys] = useState([]);
 
     const gen = () => {
         let width = 390 - 10, height = 550 - 10;
@@ -128,8 +129,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
     data = route.params.run ? data : gen();
     const componentRefs = data.map((item) => useRef<Piece>(null));
 
-
-    const click = (index:number) => {
+    // click data pieces
+    const clickPieces = (index:number) => {
         let res = false;
         let k = data[index].key.split('-');
         console.log(k);
@@ -151,6 +152,70 @@ function PlayScreen({ navigation, route }): JSX.Element {
         }
         return -1;
     }
+
+    // click data piece to a group
+    const clickToGroup = (index: number) => {
+        let res = false;
+        let k = data[index].key.split('-');
+        console.log(k);
+        let row = parseInt(k[0]);
+        let col = parseInt(k[1]);
+        for (let i = 0; i < groups.length; i++) {
+            for (let j = 0; j < groups[i].length; j++) {
+                let temp = groups[i][j].key.split('-');
+                let tempRow = parseInt(temp[0]);
+                let tempCol = parseInt(temp[1]);
+                if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
+                    (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
+                    let leftDif = Math.abs(data[index].left - groups[i][j].left);
+                    let topDif = Math.abs(data[index].top - groups[i][j].top);
+                    if (topDif <= 12 && leftDif <= 12) {
+                        res = true;
+                        return i;
+                    }
+                }
+            }
+           
+        }
+        return -1;
+    }
+
+    // click two groups
+    const clickGroups = (index: number) => {
+        return -1;
+    }
+
+    // click group to piece
+    const clickToPiece = (index: number) => {
+        let res = false;
+
+        for (let x = 0; x < groups[index].length; x++)
+        {
+            let k = groups[index][x].key.split('-');
+            console.log(k);
+            let row = parseInt(k[0]);
+            let col = parseInt(k[1]);
+            for (let i = 0; i < data.length; i++) {
+                let temp = data[i].key.split('-');
+                let tempRow = parseInt(temp[0]);
+                let tempCol = parseInt(temp[1]);
+                if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
+                    (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
+                    let leftDif = Math.abs(groups[index][x].left - data[i].left);
+                    let topDif = Math.abs(groups[index][x].top - data[i].top);
+                    if (topDif <= 12 && leftDif <= 12) {
+                        res = true;
+                        return i;
+                    }
+                }
+            }
+
+        }
+        
+        return -1;
+    }
+
+
 
     
     return (
@@ -206,10 +271,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     item.visible = false;
                                                 }
 
-                                                let l = item.left;
-                                                let t = item.top;
-                                                item.left = l + ges["dx"];
-                                                item.top = t + ges["dy"];
+                                                item.left += ges["dx"];
+                                                item.top += ges["dy"];
                                                 
                                             }}
                                         >
@@ -230,20 +293,28 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                         <Draggable
                                             key={keys[index]}
                                             onDragRelease={(e, ges, bounds) => {
-                                                let l = item.left;
-                                                let t = item.top;
-                                                item.left = l + ges["dx"];
-                                                item.top = t + ges["dy"];
+                                                item.left += ges["dx"];
+                                                item.top += ges["dy"];
                                                 componentRefs[index]?.current?.updateCoords(item.left, item.top);
                                                 
-                                                let clicked = click(index)
+                                                let clicked = clickPieces(index);
+                                                // let clickedGroup = clickToGroup(index);
                                                 if (clicked !== -1) {
-                                                    console.log("should click");
+                                                    console.log("should click pieces");
 
                                                     item.top = data[clicked].top;
                                                     item.left = data[clicked].left;
                                                     componentRefs[index]?.current?.updateCoords(item.left, item.top);
-                                                    
+
+                                                    // add the two pieces to groups as one group
+                                                    groups.push([data[index], data[clicked]]);
+
+                                                    // remove the two pieces from data
+                                                    // let tempData = [...data];
+                                                    // tempData = tempData.filter((el) => {
+                                                    //     return (el !== tempData[index] && el !== tempData[clicked]);
+                                                    // })
+                                                    // data = tempData;
 
                                                     // const options = {
                                                     //     enableVibrateFallback: true,
@@ -252,6 +323,26 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     // ReactNativeHapticFeedback.trigger("impactLight", options);
                                                 }
+
+                                                
+                                                // else if (clickedGroup !== -1) {
+                                                //     console.log("should click piece to group");
+
+                                                //     item.top = groups[clickedGroup][0].top;
+                                                //     item.left = groups[clickedGroup][0].left;
+                                                //     componentRefs[index]?.current?.updateCoords(item.left, item.top);
+
+                                                //     // add the the piece at index to group it clicked with
+                                                //     groups[clickedGroup].push(data[index]);
+
+                                                //     // remove the piece from data
+                                                //     let tempData = [...data];
+                                                //     tempData = tempData.filter((el) => {
+                                                //         return (el !== tempData[index]);
+                                                //     })
+                                                //     data = tempData;
+
+                                                // }
 
                                                 let temp = [...keys];
                                                 if (temp[index] === index) {
@@ -277,11 +368,75 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                     <Draggable
                                         key={index}
                                         onDragRelease={(e, ges, bounds) => {
+                                            group.map((item:any, i:number) => {
+                                                item.left += ges["dx"];
+                                                item.top += ges["dy"];
+                                                componentRefs[i]?.current?.updateCoords(item.left, item.top);
+
+                                            })
+                                            
+
+                                            // let clickedGroup = clickGroups(index);
+                                            // let clickedPiece = clickToPiece(index);
+
+                                            // if (clickedGroup !== -1) {
+                                            //     console.log("should click groups");
+                                            //     group.map((item: any, i: number) => {
+                                            //         item.left = groups[clickedGroup][0].left;
+                                            //         item.top = groups[clickedGroup][0].top;
+                                            //         componentRefs[i]?.current?.updateCoords(item.left, item.top);
+
+                                            //     })
+                                                
+                                            //     // merge the two groups
+                                            //     let tempGroups = [...groups];
+                                            //     tempGroups[index] = tempGroups[index].concat(tempGroups[clickedGroup]);
+                                            //     tempGroups = tempGroups.filter((el) => {
+                                            //         return (el !== tempGroups[clickedGroup]);
+                                            //     })
+                                            //     groups = tempGroups;
+
+
+                                            // }
+
+                                            
+                                            // else if (clickedPiece !== -1) {
+                                            //     console.log("should click group to piece");
+                                            //     group.map((item: any, i: number) => {
+                                            //         item.left = data[clickedPiece].left;
+                                            //         item.top = data[clickedPiece].top;
+                                            //         componentRefs[i]?.current?.updateCoords(item.left, item.top);
+
+                                            //     })
+
+                                            //    // add piece to current group
+                                            //     let tempGroups = [...groups];
+                                            //     tempGroups[index].push(data[clickedPiece]);
+                                            //     groups = tempGroups;
+
+                                            //     // remove piece from data
+                                            //     let tempData = [...data];
+                                            //     tempData = tempData.filter((el) => {
+                                            //         return (el !== tempData[clickedPiece]);
+                                            //     })
+                                            //     data = tempData;
+
+                                            // }
+                                            
+
+                                            // let temp = [...keys];
+                                            // if (temp[index] === index) {
+                                            //     temp[index] = groups[index][0].key
+                                            // }
+                                            // else {
+                                            //     temp[index] = index;
+                                            // }
+                                            // setKeys(temp);
 
                                         }}
                                     >
                                         {group.map((item:any, i:number) => {
-                                            return (<Piece {...item}/>)
+                                            return ( <Piece {...item} ref={componentRefs[i]} /> )
                                         })}
                                     </Draggable>
                                 )

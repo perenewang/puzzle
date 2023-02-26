@@ -32,16 +32,16 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
     }
 
     componentDidMount() {
-        console.log("Piece has mounted.")
+        // console.log("Piece has mounted.")
     }
 
     componentWillUnmount() {
-        console.log("Piece is unmounting.")
+        // console.log("Piece is unmounting.")
     }
 
     componentDidUpdate() {
-        console.log("Piece has updated.")
-        console.log(this.state.top, this.state.left);
+        // console.log("Piece has updated.")
+        // console.log(this.state.top, this.state.left);
     }
 
     getVis = () => {
