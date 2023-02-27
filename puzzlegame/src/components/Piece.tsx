@@ -13,10 +13,11 @@ import * as SVG from "react-native-svg";
 //   top : number           - Top displacement
 //   left : number          - Left displacement
 //   img_src: string        - String defining path of image source
-class Piece extends Component<{}, {visible: boolean, z : number, width : number, height : number, key : string, path : string, top : number, left : number, img_src : string}> {
+class Piece extends Component<{}, {removed: boolean, visible: boolean, z : number, width : number, height : number, key : string, path : string, top : number, left : number, img_src : string}> {
     constructor(props : any){
         super(props);
         this.state= {
+            removed: props.removed,
             visible: props.visible,
             z: props.z,
             width: props.width,

@@ -108,6 +108,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                 
                 const pieceProps = {
+                    removed: false,
                     visible: false,
                     z: -100,
                     width: width,
@@ -287,7 +288,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         ) : (
                         <View>
                             {data.map((item, index) => {
-                                if (item.visible) {
+                                if (item.visible && !item.removed) {
 
                                     return (
                                         <Draggable
@@ -309,12 +310,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     // add the two pieces to groups as one group
                                                     groups.push([data[index], data[clicked]]);
 
-                                                    // // remove the two pieces from data
-                                                    // let tempData = [...data];
-                                                    // tempData = tempData.filter((el) => {
-                                                    //     return (el !== tempData[index] && el !== tempData[clicked]);
-                                                    // })
-                                                    // data = tempData;
+                                                    // remove both pieces from data
+                                                    item.removed = true;
+                                                    data[clicked].removed = true;
+
 
                                                     // const options = {
                                                     //     enableVibrateFallback: true,
