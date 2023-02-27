@@ -13,13 +13,13 @@ import {
 } from 'react-native';
 
 function WinScreen(): JSX.Element {
-    const [count, setCount] = useState(0);
+    
 
     return (
         <SafeAreaView>
             <StatusBar />
             <View>
-                <Button onPress={() => setCount(count + 1)} title={`Count : ${count}`} />
+                <Text>YOU WIN</Text>
             </View>
         </SafeAreaView>
     )

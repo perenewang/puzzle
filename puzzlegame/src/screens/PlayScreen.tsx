@@ -84,7 +84,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     let xC = Math.floor((yC * 2) / 3);
 
     const [keys, setKeys] = useState(Array.from(Array(xC*yC).keys()));
-    const [groupKeys, setGroupKeys] = useState(Array.from(Array(xC * yC).keys()));
+    const [groupKeys, setGroupKeys] = useState(Array(0));
 
     const gen = () => {
         let width = 390 - 10, height = 550 - 10;
@@ -129,6 +129,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
     groups = route.params.run ? groups : [];
     data = route.params.run ? data : gen();
+
+    if (groups.length === 1 && groups[0].length === data.length) {
+        navigation.navigate('Win');
+    }
 
     const componentRefs = data.map((item) => useRef<Piece>(null));
     const componentGroupRefs = data.map((item) => useRef<Piece>(null));
@@ -204,18 +208,21 @@ function PlayScreen({ navigation, route }): JSX.Element {
             let row = parseInt(k[0]);
             let col = parseInt(k[1]);
             for (let i = 0; i < data.length; i++) {
-                let temp = data[i].key.split('-');
-                let tempRow = parseInt(temp[0]);
-                let tempCol = parseInt(temp[1]);
-                if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
-                    (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
-                    let leftDif = Math.abs(groups[index][x].left - data[i].left);
-                    let topDif = Math.abs(groups[index][x].top - data[i].top);
-                    if (topDif <= 12 && leftDif <= 12) {
-                        res = true;
-                        return i;
+                if (!data[i].removed) {
+                    let temp = data[i].key.split('-');
+                    let tempRow = parseInt(temp[0]);
+                    let tempCol = parseInt(temp[1]);
+                    if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
+                        (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
+                        let leftDif = Math.abs(groups[index][x].left - data[i].left);
+                        let topDif = Math.abs(groups[index][x].top - data[i].top);
+                        if (topDif <= 12 && leftDif <= 12) {
+                            res = true;
+                            return i;
+                        }
                     }
                 }
+                
             }
 
         }
@@ -320,6 +327,12 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     item.removed = true;
                                                     data[clicked].removed = true;
 
+                                                    let temp = [...groupKeys];
+                                                    temp.push(groupKeys.length);
+                                                    setGroupKeys(temp);
+
+
+
 
                                                     // const options = {
                                                     //     enableVibrateFallback: true,
@@ -383,12 +396,13 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     item.left = data[clickedPiece].left;
                                                     componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
 
+                                                    // remove pieces from data
+                                                    data[clickedPiece].removed = true;
+
                                                     // add the piece to the group
                                                     group.push(data[clickedPiece]);
 
-                                                    // remove pieces from data
-                                                    //item.removed = true;
-                                                    data[clickedPiece].removed = true;
+                                                    
 
 
                                                     // const options = {
@@ -447,7 +461,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                             let temp = [...groupKeys];
                                             if (temp[index] === index) {
-                                                temp[index] = groups[index][0].key
+                                                temp[index] = groups[index][0].key;
                                             }
                                             else {
                                                 temp[index] = index;
