@@ -375,7 +375,32 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 const ref = index * groups[index].length + i;
                                                 componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
 
+                                                let clickedPiece = clickToPiece(index);
+                                                if (clickedPiece !== -1) {
+                                                    console.log("should click group to piece");
+
+                                                    item.top = data[clickedPiece].top;
+                                                    item.left = data[clickedPiece].left;
+                                                    componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
+
+                                                    // add the piece to the group
+                                                    group.push(data[clickedPiece]);
+
+                                                    // remove pieces from data
+                                                    //item.removed = true;
+                                                    data[clickedPiece].removed = true;
+
+
+                                                    // const options = {
+                                                    //     enableVibrateFallback: true,
+                                                    //     ignoreAndroidSystemSettings: false
+                                                    // };
+
+                                                    // ReactNativeHapticFeedback.trigger("impactLight", options);
+                                                }
                                             })
+
+                                            
                                             
 
                                             // let clickedGroup = clickGroups(index);
