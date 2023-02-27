@@ -14,7 +14,7 @@ import {
 
 function WinScreen(): JSX.Element {
     
-
+// add picture to album
     return (
         <SafeAreaView>
             <StatusBar />

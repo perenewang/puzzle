@@ -21,13 +21,14 @@ import Piece from '../components/Piece'
 
 
 // TO DO:
-// - determine if puzzle is finished —> give win screen —> add to album
+// - haptic and sound feedback
 // - settings popup
+//      - able to turn on/off haptic and sound?
+//      - quit goes to home
+//      - restart resets the puzzle
+//      - instructions popup
 // - CSS
 
-
-// - update click function to filter through data and groups
-// - somewhere if piece clicks, remove from data and put into group, or if group click group, merge groups
 
 let data: any[] = [];
 let groups: any[] = [];
@@ -96,7 +97,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
         for (let i = 0; i < cells.length; i++) {
             for (let j = 0; j < cells[i].length; j++) {
                 let k = i.toString() + "-" + j.toString();
-                // let k = {row: i, column: j};
                 let p = cells[i][j];
 
                 let left_bound = -(j * piece_width);
@@ -142,7 +142,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const clickPieces = (index:number) => {
         let res = false;
         let k = data[index].key.split('-');
-        console.log(k);
         let row = parseInt(k[0]);
         let col = parseInt(k[1]);
         for (let i = 0; i < data.length; i++) {
@@ -169,7 +168,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const clickToGroup = (index: number) => {
         let res = false;
         let k = data[index].key.split('-');
-        console.log(k);
         let row = parseInt(k[0]);
         let col = parseInt(k[1]);
         for (let i = 0; i < groups.length; i++) {
@@ -194,6 +192,36 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
     // click two groups
     const clickGroups = (index: number) => {
+        let res = false;
+        for (let i = 0; i < groups.length; i++) {
+            if (i !== index) {
+                let leftDif = Math.abs(groups[index][0].left - groups[i][0].left);
+                let topDif = Math.abs(groups[index][0].top - groups[i][0].top);
+                if (topDif <= 12 && leftDif <= 12) {
+                    // iterate through groups[index] and groups[i] to see if any piece in 
+                    // groups[index] is on top or next to any piece in groups[i]
+                    for (let x = 0; x < groups[index].length; x++) {
+                        let k = groups[index][x].key.split('-');
+                        let row = parseInt(k[0]);
+                        let col = parseInt(k[1]);
+
+                        for (let j = 0; j < groups[i].length; j++) {
+                            let temp = groups[i][j].key.split('-');
+                            let tempRow = parseInt(temp[0]);
+                            let tempCol = parseInt(temp[1]);
+                            if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
+                                (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) {
+                                res = true;
+                                return i;
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            
+        }
         return -1;
     }
 
@@ -204,7 +232,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
         for (let x = 0; x < groups[index].length; x++)
         {
             let k = groups[index][x].key.split('-');
-            console.log(k);
             let row = parseInt(k[0]);
             let col = parseInt(k[1]);
             for (let i = 0; i < data.length; i++) {
@@ -231,7 +258,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
     }
 
 
-    
     return (
         <SafeAreaView>
                 <View style={styles.playScreenHeader}>
@@ -313,6 +339,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 
                                                 let clicked = clickPieces(index);
                                                 let clickedGroup = clickToGroup(index);
+
                                                 if (clicked !== -1) {
                                                     console.log("should click pieces");
 
@@ -405,6 +432,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 }
                                             )
                                             let clickedPiece = clickToPiece(index);
+                                            let clickedGroup = clickGroups(index);
+
                                             if (clickedPiece !== -1) {
                                                 console.log("should click group to piece");
 
@@ -423,54 +452,28 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 group.push(data[clickedPiece]);
                                             }
 
-                                            
-                                            
+                                            else if (clickedGroup !== -1) {
+                                                console.log("should click groups");
 
-                                            // let clickedGroup = clickGroups(index);
-                                            // let clickedPiece = clickToPiece(index);
+                                                group.map((item: any, i: number) => {
+                                                    item.left = groups[clickedGroup][0].left;
+                                                    item.top = groups[clickedGroup][0].top;
+                                                    const ref = index * groups[index].length + i;
+                                                    componentRefs[ref]?.current?.updateCoords(item.left, item.top);
 
-                                            // if (clickedGroup !== -1) {
-                                            //     console.log("should click groups");
-                                            //     group.map((item: any, i: number) => {
-                                            //         item.left = groups[clickedGroup][0].left;
-                                            //         item.top = groups[clickedGroup][0].top;
-                                            //         componentRefs[i]?.current?.updateCoords(item.left, item.top);
-
-                                            //     })
+                                                })
                                                 
-                                            //     // merge the two groups
-                                            //     let tempGroups = [...groups];
-                                            //     tempGroups[index] = tempGroups[index].concat(tempGroups[clickedGroup]);
-                                            //     tempGroups = tempGroups.filter((el) => {
-                                            //         return (el !== tempGroups[clickedGroup]);
-                                            //     })
-                                            //     groups = tempGroups;
+                                                // merge the two groups
+                                                groups[index] = group.concat(groups[clickedGroup]);
+                                                groups.splice(clickedGroup, 1);
 
 
-                                            // }
+                                            }
 
                                             
-                                            // else if (clickedPiece !== -1) {
-                                            //     console.log("should click group to piece");
-                                            //     group.map((item: any, i: number) => {
-                                            //         item.left = data[clickedPiece].left;
-                                            //         item.top = data[clickedPiece].top;
-                                            //         componentRefs[i]?.current?.updateCoords(item.left, item.top);
-
-                                            //     })
-
-                                            //    // add piece to current group
-                                            //     group.push(data[clickedPiece]);
-
-                                            //     // remove the piece from data
-                                            //     data[clickedPiece].removed = true;
-
-                                            // }
-                                            
-
                                             let temp = [...groupKeys];
                                             if (temp[index] === index) {
-                                                temp[index] = groups[index][0].key;
+                                                temp[index] = group[0].key;
                                             }
                                             else {
                                                 temp[index] = index;
