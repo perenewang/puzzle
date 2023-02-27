@@ -482,10 +482,12 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                         }}
                                     >
-                                        {group.map((item:any, i:number) => {
-                                            const ref = index * groups[index].length + i;
-                                            return (<Piece {...item} ref={componentGroupRefs[ref]} /> )
-                                        })}
+                                        <View>
+                                            {group.map((item:any, i:number) => {
+                                                const ref = index * groups[index].length + i;
+                                                return (<Piece {...item} ref={componentGroupRefs[ref]} />)
+                                            })}
+                                        </View>
                                     </Draggable>
                                 )
                             })
