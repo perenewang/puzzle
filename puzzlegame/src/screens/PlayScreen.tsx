@@ -127,8 +127,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
         return pieces;
     };
 
-    data = route.params.run ? data : gen();
     groups = route.params.run ? groups : [];
+    data = route.params.run ? data : gen();
 
     const componentRefs = data.map((item) => useRef<Piece>(null));
     const componentGroupRefs = data.map((item) => useRef<Piece>(null));
