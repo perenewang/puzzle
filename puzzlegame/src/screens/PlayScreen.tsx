@@ -326,6 +326,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     // remove both pieces from data
                                                     item.removed = true;
                                                     data[clicked].removed = true;
+                                                    componentRefs[index]?.current?.updateRemoved(true);
+                                                    componentRefs[clicked]?.current?.updateRemoved(true);
 
                                                     let temp = [...groupKeys];
                                                     temp.push(groupKeys.length);
@@ -355,6 +357,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     // remove the piece from data
                                                     item.removed = true;
+                                                    componentRefs[index]?.current?.updateRemoved(true);
 
                                                 }
 
@@ -398,6 +401,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     // remove pieces from data
                                                     data[clickedPiece].removed = true;
+                                                    componentRefs[clickedPiece]?.current?.updateRemoved(true);
 
                                                     // add the piece to the group
                                                     group.push(data[clickedPiece]);

@@ -69,9 +69,16 @@ class Piece extends Component<{}, {removed: boolean, visible: boolean, z : numbe
 
         return true;
     }
+
+    updateRemoved = (r : boolean) => {
+        this.setState({
+            removed: r
+        })
+    }
     
-    updateVis(vis: boolean) {
+    updateVis = (vis: boolean) => {
         this.state = {
+            removed: this.state.removed,
             visible: vis,
             z: this.state.z,
             width: this.state.width,
