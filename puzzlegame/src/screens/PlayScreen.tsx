@@ -84,7 +84,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
     let xC = Math.floor((yC * 2) / 3);
 
     const [keys, setKeys] = useState(Array.from(Array(xC*yC).keys()));
-    const [groupKeys, setGroupKeys] = useState([]);
+    const [groupKeys, setGroupKeys] = useState(Array.from(Array(xC * yC).keys()));
 
     const gen = () => {
         let width = 390 - 10, height = 550 - 10;
@@ -309,7 +309,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     // add the two pieces to groups as one group
                                                     groups.push([data[index], data[clicked]]);
 
-                                                    // remove the two pieces from data
+                                                    // // remove the two pieces from data
                                                     // let tempData = [...data];
                                                     // tempData = tempData.filter((el) => {
                                                     //     return (el !== tempData[index] && el !== tempData[clicked]);
@@ -366,7 +366,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                 return (
                                     <Draggable
-                                        key={index}
+                                        key={groupKeys[index]}
                                         onDragRelease={(e, ges, bounds) => {
                                             group.map((item:any, i:number) => {
                                                 item.left += ges["dx"];
@@ -424,14 +424,14 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             // }
                                             
 
-                                            // let temp = [...keys];
-                                            // if (temp[index] === index) {
-                                            //     temp[index] = groups[index][0].key
-                                            // }
-                                            // else {
-                                            //     temp[index] = index;
-                                            // }
-                                            // setKeys(temp);
+                                            let temp = [...groupKeys];
+                                            if (temp[index] === index) {
+                                                temp[index] = groups[index][0].key
+                                            }
+                                            else {
+                                                temp[index] = index;
+                                            }
+                                            setGroupKeys(temp);
 
                                         }}
                                     >
