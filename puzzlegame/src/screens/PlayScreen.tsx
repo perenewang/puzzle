@@ -448,7 +448,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 group.map((item: any, i: number) => {
                                                     item.top = data[clickedPiece].top;
                                                     item.left = data[clickedPiece].left;
-                                                    const ref = index * groups[index].length + i;
+                                                    const ref = data.indexOf(item);
                                                     componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
                                                 })
 
@@ -466,7 +466,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 group.map((item: any, i: number) => {
                                                     item.left = groups[clickedGroup][0].left;
                                                     item.top = groups[clickedGroup][0].top;
-                                                    const ref = index * groups[index].length + i;
+                                                    const ref = data.indexOf(item);
                                                     componentRefs[ref]?.current?.updateCoords(item.left, item.top);
 
                                                 })
@@ -492,7 +492,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                     >
                                         <View>
                                             {group.map((item:any, i:number) => {
-                                                const ref = index * groups[index].length + i;
+                                                const ref = data.indexOf(item);
                                                 return (<Piece {...item} ref={componentGroupRefs[ref]} />)
                                             })}
                                         </View>

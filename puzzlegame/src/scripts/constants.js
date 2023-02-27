@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
     selectImages: {
        width: "97%",
        height: 200,
-       margin: 3
+       margin: 3,
+    //    resizeMode: "contain",
     },
 
     item: {
@@ -29,6 +30,7 @@ export const styles = StyleSheet.create({
     previewImage: {
         width: "90%",
         height: "80%",
+        resizeMode: "contain",
     },
 
     level: {
