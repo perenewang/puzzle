@@ -391,20 +391,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 const ref = index * groups[index].length + i;
                                                 componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
 
-                                                let clickedPiece = clickToPiece(index);
-                                                if (clickedPiece !== -1) {
-                                                    console.log("should click group to piece");
-
-                                                    item.top = data[clickedPiece].top;
-                                                    item.left = data[clickedPiece].left;
-                                                    componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
-
-                                                    // remove pieces from data
-                                                    data[clickedPiece].removed = true;
-                                                    componentRefs[clickedPiece]?.current?.updateRemoved(true);
-
-                                                    // add the piece to the group
-                                                    group.push(data[clickedPiece]);
+                                                
 
                                                     
 
@@ -416,7 +403,25 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     // ReactNativeHapticFeedback.trigger("impactLight", options);
                                                 }
-                                            })
+                                            )
+                                            let clickedPiece = clickToPiece(index);
+                                            if (clickedPiece !== -1) {
+                                                console.log("should click group to piece");
+
+                                                group.map((item: any, i: number) => {
+                                                    item.top = data[clickedPiece].top;
+                                                    item.left = data[clickedPiece].left;
+                                                    const ref = index * groups[index].length + i;
+                                                    componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
+                                                })
+
+                                                // remove pieces from data
+                                                data[clickedPiece].removed = true;
+                                                componentRefs[clickedPiece]?.current?.updateRemoved(true);
+
+                                                // add the piece to the group
+                                                group.push(data[clickedPiece]);
+                                            }
 
                                             
                                             
