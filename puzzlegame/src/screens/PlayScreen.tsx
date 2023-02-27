@@ -305,7 +305,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 componentRefs[index]?.current?.updateCoords(item.left, item.top);
                                                 
                                                 let clicked = clickPieces(index);
-                                                // let clickedGroup = clickToGroup(index);
+                                                let clickedGroup = clickToGroup(index);
                                                 if (clicked !== -1) {
                                                     console.log("should click pieces");
 
@@ -330,24 +330,20 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 }
 
                                                 
-                                                // else if (clickedGroup !== -1) {
-                                                //     console.log("should click piece to group");
+                                                else if (clickedGroup !== -1) {
+                                                    console.log("should click piece to group");
 
-                                                //     item.top = groups[clickedGroup][0].top;
-                                                //     item.left = groups[clickedGroup][0].left;
-                                                //     componentRefs[index]?.current?.updateCoords(item.left, item.top);
+                                                    item.top = groups[clickedGroup][0].top;
+                                                    item.left = groups[clickedGroup][0].left;
+                                                    componentRefs[index]?.current?.updateCoords(item.left, item.top);
 
-                                                //     // add the the piece at index to group it clicked with
-                                                //     groups[clickedGroup].push(data[index]);
+                                                    // add the the piece at index to group it clicked with
+                                                    groups[clickedGroup].push(data[index]);
 
-                                                //     // remove the piece from data
-                                                //     let tempData = [...data];
-                                                //     tempData = tempData.filter((el) => {
-                                                //         return (el !== tempData[index]);
-                                                //     })
-                                                //     data = tempData;
+                                                    // remove the piece from data
+                                                    item.removed = true;
 
-                                                // }
+                                                }
 
                                                 let temp = [...keys];
                                                 if (temp[index] === index) {
@@ -416,16 +412,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             //     })
 
                                             //    // add piece to current group
-                                            //     let tempGroups = [...groups];
-                                            //     tempGroups[index].push(data[clickedPiece]);
-                                            //     groups = tempGroups;
+                                            //     group.push(data[clickedPiece]);
 
-                                            //     // remove piece from data
-                                            //     let tempData = [...data];
-                                            //     tempData = tempData.filter((el) => {
-                                            //         return (el !== tempData[clickedPiece]);
-                                            //     })
-                                            //     data = tempData;
+                                            //     // remove the piece from data
+                                            //     data[clickedPiece].removed = true;
 
                                             // }
                                             
