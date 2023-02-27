@@ -128,7 +128,11 @@ function PlayScreen({ navigation, route }): JSX.Element {
     };
 
     data = route.params.run ? data : gen();
+    groups = route.params.run ? groups : [];
+
     const componentRefs = data.map((item) => useRef<Piece>(null));
+    const componentGroupRefs = data.map((item) => useRef<Piece>(null));
+
 
     // click data pieces
     const clickPieces = (index:number) => {
@@ -138,18 +142,21 @@ function PlayScreen({ navigation, route }): JSX.Element {
         let row = parseInt(k[0]);
         let col = parseInt(k[1]);
         for (let i = 0; i < data.length; i++) {
-            let temp = data[i].key.split('-');
-            let tempRow = parseInt(temp[0]);
-            let tempCol = parseInt(temp[1]);
-            if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
-                (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
-                let leftDif = Math.abs(data[index].left - data[i].left);
-                let topDif = Math.abs(data[index].top - data[i].top);
-                if (topDif <= 12 && leftDif <= 12 ) { 
-                    res = true;
-                    return i;
+            if (!data[i].removed) {
+                let temp = data[i].key.split('-');
+                let tempRow = parseInt(temp[0]);
+                let tempCol = parseInt(temp[1]);
+                if ((row === tempRow && (col + 1 === tempCol || col - 1 === tempCol)) || // on top of each other
+                    (col === tempCol && (row + 1 === tempRow || row - 1 === tempRow))) { // next to each other
+                    let leftDif = Math.abs(data[index].left - data[i].left);
+                    let topDif = Math.abs(data[index].top - data[i].top);
+                    if (topDif <= 12 && leftDif <= 12) {
+                        res = true;
+                        return i;
+                    }
                 }
             }
+            
         }
         return -1;
     }
@@ -215,7 +222,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
         
         return -1;
     }
-
 
 
     
@@ -370,7 +376,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             group.map((item:any, i:number) => {
                                                 item.left += ges["dx"];
                                                 item.top += ges["dy"];
-                                                componentRefs[i]?.current?.updateCoords(item.left, item.top);
+                                                const ref = index * groups[index].length + i;
+                                                componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
 
                                             })
                                             
@@ -435,7 +442,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                         }}
                                     >
                                         {group.map((item:any, i:number) => {
-                                            return ( <Piece {...item} ref={componentRefs[i]} /> )
+                                            const ref = index * groups[index].length + i;
+                                            return (<Piece {...item} ref={componentGroupRefs[ref]} /> )
                                         })}
                                     </Draggable>
                                 )
