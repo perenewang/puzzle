@@ -9,17 +9,20 @@ import {
     Text,
     useColorScheme,
     View,
-    Button
+    Button,
+    Image
 } from 'react-native';
 
-function WinScreen(): JSX.Element {
+function WinScreen({ navigation, route }): JSX.Element {
+    const { lvl, img_src, time } = route.params;
     
 // add picture to album
     return (
         <SafeAreaView>
             <StatusBar />
             <View>
-                <Text>YOU WIN</Text>
+                <Text>You completed this puzzle in {time} at level {lvl}</Text>
+                <Image style={styles.previewImage} source={img_src} />
             </View>
         </SafeAreaView>
     )

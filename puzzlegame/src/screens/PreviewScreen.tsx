@@ -74,6 +74,7 @@ function PreviewScreen({ navigation, route }): JSX.Element {
     return (
         <SafeAreaView style={styles.previewContainer}>
             <Image style={styles.previewImage} source={img_src} />
+            <Button onPress={()=>navigation.navigate('Win', { lvl: level, img_src: img_src, time: 0 })} title="win"/>
 
             <Button style={styles.level} onPress={levelPress} title={"Level: " + level}/>
             <Button style={styles.level} onPress={playPress} title="Play" />

@@ -39,6 +39,9 @@ function PlayScreen({ navigation, route }): JSX.Element {
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [piecesVisible, setPiecesVisible] = useState(false);
     const [isLoading, setLoading] = useState(true);
+    // const [finished, setFinished] = useState(false);
+
+    let finished = false;
 
     let src = img_src
     if (img_src == 1) {
@@ -131,7 +134,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
     data = route.params.run ? data : gen();
 
     if (groups.length === 1 && groups[0].length === data.length) {
-        navigation.navigate('Win');
+        
+        finished = true;
     }
 
     const componentRefs = data.map((item) => useRef<Piece>(null));
@@ -264,12 +268,16 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('Preview', { img_src: img_src });
-
                         }}>
                         <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
                     </TouchableOpacity>
                     <Text style={{color:"white", fontSize:20}}>{lvl}</Text>
-                    <Stopwatch start={isStart} options={styles.stopwatch} />
+                    <Stopwatch start={isStart} options={styles.stopwatch} getTime={(time) => {
+                        if (finished) {
+                            setIsStart(false);
+                            navigation.navigate('Win', { lvl: lvl, img_src: src, time: time });
+                        }
+                    }}/>
                     <TouchableOpacity
                         onPress={() => {
                             setPiecesVisible(true);
