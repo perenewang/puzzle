@@ -76,17 +76,19 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 100
     },
-    
-    board: {
-        backgroundColor: "silver",
-        height: "100%",
-        width: "100%",
-        // justifyContent: 'center',
+
+    winscreen: {
+        justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    piecesPopup: {
 
     },
+
+    winImage: {
+        resizeMode: "contain",
+        height: "80%",
+        width: "70%",
+        
+    },
+
 
 })

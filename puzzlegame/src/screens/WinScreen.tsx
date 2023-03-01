@@ -19,10 +19,9 @@ function WinScreen({ navigation, route }): JSX.Element {
 // add picture to album
     return (
         <SafeAreaView>
-            <StatusBar />
-            <View>
+            <View style={styles.winscreen}>
                 <Text>You completed this puzzle in {time} at level {lvl}</Text>
-                <Image style={styles.previewImage} source={img_src} />
+                <Image style={styles.winImage} source={img_src} />
             </View>
         </SafeAreaView>
     )

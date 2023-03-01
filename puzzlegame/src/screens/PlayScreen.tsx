@@ -261,229 +261,213 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
     return (
         <SafeAreaView>
-                <View style={styles.playScreenHeader}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('Preview', { img_src: img_src });
-                        }}>
-                        <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
-                    </TouchableOpacity>
-                    <Text style={{color:"white", fontSize:20}}>{lvl}</Text>
-                    <Stopwatch start={isStart} options={styles.stopwatch} getTime={(time) => {
-                        if (finished) {
-                            setIsStart(false);
-                            navigation.navigate('Win', { lvl: lvl, img_src: src, time: time });
-                        }
-                    }}/>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setPiecesVisible(true);
-                        }}>
-                        <Image style={{ height: 35, width: 25 }} source={require("../assets/icons/piecesBag.png")} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setIsStart(false);
-                            setSettingsVisible(true);
-                        }}>
-                        <Image style={{ height: 25, width: 25 }} source={require("../assets/icons/settings.png")} />
-                    </TouchableOpacity>
-                </View>
-            {/* {isLoading ? (
-                <Text> LOADING ...</Text>
-            ) : ( */}
-                {/* <View style={styles.board}> */}
-                    <View style={styles.settingsMenu}>
-                        {settingsVisible ? <SettingsMenu /> : null}
-                        {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
-                    </View>
-                    {piecesVisible ? (
-                        <View style={{borderWidth: 5, height: 550, width: 390, top: 1, }}> 
-                            {data.map((item, index) => {
-                                if (!item.visible) {
-                                    
-                                    return (
-                                        <Draggable
-                                            key={item.key}
-                                            onDragRelease={(e, ges, bounds) => {
-                                                console.log("drag release");
-                                                if (ges["moveY"] > 630) {
-                                                    console.log("should stay");
-                                                    item.visible= true;
-                                                    
-                                                }
-                                                else {
-                                                    item.visible = false;
-                                                }
-
-                                                item.left += ges["dx"];
-                                                item.top += ges["dy"];
-                                                
-                                            }}
-                                        >
-                                            <Piece {...item} />
-
-                                        </Draggable>
-                                    )
-                                }
-                            })}
-                            <Button title="X" onPress={() => setPiecesVisible(false)} /> 
-                        </View>
-                        ) : (
-                        <View>
-                            {data.map((item, index) => {
-                                if (item.visible && !item.removed) {
-
-                                    return (
-                                        <Draggable
-                                            key={keys[index]}
-                                            onDragRelease={(e, ges, bounds) => {
-                                                item.left += ges["dx"];
-                                                item.top += ges["dy"];
-                                                
-                                                let clicked = clickPieces(index);
-                                                let clickedGroup = clickToGroup(index);
-
-                                                if (clicked !== -1) {
-                                                    console.log("should click pieces");
-
-                                                    item.top = data[clicked].top;
-                                                    item.left = data[clicked].left;
-
-                                                    // add the two pieces to groups as one group
-                                                    groups.push([data[index], data[clicked]]);
-
-                                                    // remove both pieces from data
-                                                    item.removed = true;
-                                                    data[clicked].removed = true;
-
-                                                    let temp = [...groupKeys];
-                                                    temp.push(groupKeys.length);
-                                                    setGroupKeys(temp);
-
-
-
-
-                                                    // const options = {
-                                                    //     enableVibrateFallback: true,
-                                                    //     ignoreAndroidSystemSettings: false
-                                                    // };
-
-                                                    // ReactNativeHapticFeedback.trigger("impactLight", options);
-                                                }
-
-                                                
-                                                else if (clickedGroup !== -1) {
-                                                    console.log("should click piece to group");
-
-                                                    item.top = groups[clickedGroup][0].top;
-                                                    item.left = groups[clickedGroup][0].left;
-
-                                                    // add the the piece at index to group it clicked with
-                                                    groups[clickedGroup].push(data[index]);
-
-                                                    // remove the piece from data
-                                                    item.removed = true;
-
-                                                }
-
-                                                let temp = [...keys];
-                                                if (temp[index] === index) {
-                                                    temp[index] = item.key
-                                                }
-                                                else {
-                                                    temp[index] = index;
-                                                }
-                                                setKeys(temp);
-
-                                            }}
-
-                                        >
-                                            <Piece {...item} />
-
-                                        </Draggable>
-                                    )
-                                }
-                            })}
-                            {groups.map((group, index) => {
-
-                                return (
-                                    <Draggable
-                                        key={groupKeys[index]}
-                                        onDragRelease={(e, ges, bounds) => {
-                                            group.map((item:any, i:number) => {
-                                                item.left += ges["dx"];
-                                                item.top += ges["dy"];
-
-                                                    // const options = {
-                                                    //     enableVibrateFallback: true,
-                                                    //     ignoreAndroidSystemSettings: false
-                                                    // };
-
-                                                    // ReactNativeHapticFeedback.trigger("impactLight", options);
-                                                }
-                                            )
-                                            let clickedPiece = clickToPiece(index);
-                                            let clickedGroup = clickGroups(index);
-
-                                            if (clickedPiece !== -1) {
-                                                console.log("should click group to piece");
-
-                                                group.map((item: any, i: number) => {
-                                                    item.top = data[clickedPiece].top;
-                                                    item.left = data[clickedPiece].left;
-                                                })
-
-                                                // remove pieces from data
-                                                data[clickedPiece].removed = true;
-
-                                                // add the piece to the group
-                                                group.push(data[clickedPiece]);
-                                            }
-
-                                            else if (clickedGroup !== -1) {
-                                                console.log("should click groups");
-
-                                                group.map((item: any, i: number) => {
-                                                    item.left = groups[clickedGroup][0].left;
-                                                    item.top = groups[clickedGroup][0].top;
-                                                })
-                                                
-                                                // merge the two groups
-                                                groups[index] = group.concat(groups[clickedGroup]);
-                                                groups.splice(clickedGroup, 1); // their indices need to change ??
-
-
-                                            }
-
+            <View style={styles.playScreenHeader}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('Preview', { img_src: img_src });
+                    }}>
+                    <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
+                </TouchableOpacity>
+                <Text style={{color:"white", fontSize:20}}>{lvl}</Text>
+                <Stopwatch start={isStart} options={styles.stopwatch} getTime={(time:number) => {
+                    if (finished) {
+                        setIsStart(false);
+                        navigation.navigate('Win', { lvl: lvl, img_src: src, time: time });
+                    }
+                }}/>
+                <TouchableOpacity
+                    onPress={() => {
+                        setPiecesVisible(true);
+                    }}>
+                    <Image style={{ height: 35, width: 25 }} source={require("../assets/icons/piecesBag.png")} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        setIsStart(false);
+                        setSettingsVisible(true);
+                    }}>
+                    <Image style={{ height: 25, width: 25 }} source={require("../assets/icons/settings.png")} />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.settingsMenu}>
+                {settingsVisible ? <SettingsMenu /> : null}
+                {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
+            </View>
+            {piecesVisible ? (
+                <View style={{borderWidth: 5, height: 550, width: 390, top: 1, }}> 
+                    {data.map((item, index) => {
+                        if (!item.visible) {
+                            
+                            return (
+                                <Draggable
+                                    key={item.key}
+                                    onDragRelease={(e, ges, bounds) => {
+                                        console.log("drag release");
+                                        if (ges["moveY"] > 630) {
+                                            console.log("should stay");
+                                            item.visible= true;
                                             
-                                            let temp = [...groupKeys];
-                                            if (temp[index] === index) {
-                                                temp[index] = group[0].key;
-                                            }
-                                            else {
-                                                temp[index] = index;
-                                            }
-                                            setGroupKeys(temp);
+                                        }
+                                        else {
+                                            item.visible = false;
+                                        }
 
-                                        }}
-                                    >
-                                        <View>
-                                            {group.map((item:any, i:number) => {
-                                                return (<Piece {...item} />)
-                                            })}
-                                        </View>
-                                    </Draggable>
-                                )
-                            })
+                                        item.left += ges["dx"];
+                                        item.top += ges["dy"];
+                                        
+                                    }}
+                                >
+                                    <Piece {...item}/>
 
-                            }
-                        </View>
-                        )}
-                    
-                {/* </View> */}
-                
-            {/* )} */}
+                                </Draggable>
+                            )
+                        }
+                    })}
+                    <Button title="X" onPress={() => setPiecesVisible(false)} /> 
+                </View>
+                ) : (
+                <View>
+                    {data.map((item, index) => {
+                        if (item.visible && !item.removed) {
+
+                            return (
+                                <Draggable
+                                    key={keys[index]}
+                                    onDragRelease={(e, ges, bounds) => {
+                                        item.left += ges["dx"];
+                                        item.top += ges["dy"];
+                                        
+                                        let clicked = clickPieces(index);
+                                        let clickedGroup = clickToGroup(index);
+
+                                        if (clicked !== -1) {
+                                            console.log("should click pieces");
+
+                                            item.top = data[clicked].top;
+                                            item.left = data[clicked].left;
+
+                                            // add the two pieces to groups as one group
+                                            groups.push([data[index], data[clicked]]);
+
+                                            // remove both pieces from data
+                                            item.removed = true;
+                                            data[clicked].removed = true;
+
+
+                                            // const options = {
+                                            //     enableVibrateFallback: true,
+                                            //     ignoreAndroidSystemSettings: false
+                                            // };
+
+                                            // ReactNativeHapticFeedback.trigger("impactLight", options);
+                                        }
+
+                                        
+                                        else if (clickedGroup !== -1) {
+                                            console.log("should click piece to group");
+
+                                            item.top = groups[clickedGroup][0].top;
+                                            item.left = groups[clickedGroup][0].left;
+                                            
+                                            // add the the piece at index to group it clicked with
+                                            groups[clickedGroup].push(data[index]);
+
+                                            // remove the piece from data
+                                            item.removed = true;
+                                            
+                                        }
+
+                                        let temp = [...keys];
+                                        if (temp[index] === index) {
+                                            temp[index] = item.key
+                                        }
+                                        else {
+                                            temp[index] = index;
+                                        }
+                                        setKeys(temp);
+
+                                    }}
+                                >
+                                    <Piece {...item}/>
+
+                                </Draggable>
+                            )
+                        }
+                    })}
+                    {groups.map((group, index) => {
+
+                        return (
+                            <Draggable
+                                key={groupKeys[index]}
+                                onDragRelease={(e, ges, bounds) => {
+                                    group.map((item:any, i:number) => {
+                                        item.left += ges["dx"];
+                                        item.top += ges["dy"];
+                                        
+                                        // const options = {
+                                        //     enableVibrateFallback: true,
+                                        //     ignoreAndroidSystemSettings: false
+                                        // };
+
+                                        // ReactNativeHapticFeedback.trigger("impactLight", options);
+                                    })
+
+                                    let clickedPiece = clickToPiece(index);
+                                    let clickedGroup = clickGroups(index);
+
+                                    if (clickedPiece !== -1) {
+                                        console.log("should click group to piece");
+
+                                        group.map((item: any, i: number) => {
+                                            item.top = data[clickedPiece].top;
+                                            item.left = data[clickedPiece].left;
+                                        })
+
+                                        // remove pieces from data
+                                        data[clickedPiece].removed = true;
+                                        
+                                        // add the piece to the group
+                                        group.push(data[clickedPiece]);
+                                    }
+
+                                    else if (clickedGroup !== -1) {
+                                        console.log("should click groups");
+
+                                        group.map((item: any, i: number) => {
+                                            item.left = groups[clickedGroup][0].left;
+                                            item.top = groups[clickedGroup][0].top;
+                                        })
+                                        
+                                        // merge the two groups
+                                        groups[index] = group.concat(groups[clickedGroup]);
+                                        groups.splice(clickedGroup, 1);
+
+
+                                    }
+                                    
+                                    let temp = [...groupKeys];
+                                    if (temp[index] === index) {
+                                        temp[index] = group[0].key;
+                                    }
+                                    else {
+                                        temp[index] = index;
+                                    }
+                                    setGroupKeys(temp);
+
+                                }}
+                            >
+                                <View>
+                                    {group.map((item:any, i:number) => {
+                                        return (<Piece {...item} />)
+                                    })}
+                                </View>
+                            </Draggable>
+                        )
+                    })
+
+                    }
+                </View>
+                )}
                 
             </SafeAreaView>
     );
