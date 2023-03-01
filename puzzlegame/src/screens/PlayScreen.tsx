@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { styles } from '../scripts/constants.js';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import {JigsawGenerator} from '../backend/puzzle-generator';
@@ -137,9 +137,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
         
         finished = true;
     }
-
-    const componentRefs = data.map((item) => useRef<Piece>(null));
-    const componentGroupRefs = data.map((item) => useRef<Piece>(null));
 
 
     // click data pieces
@@ -324,7 +321,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 
                                             }}
                                         >
-                                            <Piece {...item} ref={componentRefs[index]}/>
+                                            <Piece {...item} />
 
                                         </Draggable>
                                     )
@@ -343,7 +340,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             onDragRelease={(e, ges, bounds) => {
                                                 item.left += ges["dx"];
                                                 item.top += ges["dy"];
-                                                componentRefs[index]?.current?.updateCoords(item.left, item.top);
                                                 
                                                 let clicked = clickPieces(index);
                                                 let clickedGroup = clickToGroup(index);
@@ -353,7 +349,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     item.top = data[clicked].top;
                                                     item.left = data[clicked].left;
-                                                    componentRefs[index]?.current?.updateCoords(item.left, item.top);
 
                                                     // add the two pieces to groups as one group
                                                     groups.push([data[index], data[clicked]]);
@@ -361,8 +356,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                     // remove both pieces from data
                                                     item.removed = true;
                                                     data[clicked].removed = true;
-                                                    componentRefs[index]?.current?.updateRemoved(true);
-                                                    componentRefs[clicked]?.current?.updateRemoved(true);
 
                                                     let temp = [...groupKeys];
                                                     temp.push(groupKeys.length);
@@ -385,14 +378,12 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                                     item.top = groups[clickedGroup][0].top;
                                                     item.left = groups[clickedGroup][0].left;
-                                                    componentRefs[index]?.current?.updateCoords(item.left, item.top);
 
                                                     // add the the piece at index to group it clicked with
                                                     groups[clickedGroup].push(data[index]);
 
                                                     // remove the piece from data
                                                     item.removed = true;
-                                                    componentRefs[index]?.current?.updateRemoved(true);
 
                                                 }
 
@@ -408,7 +399,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             }}
 
                                         >
-                                            <Piece {...item} ref={componentRefs[index]} />
+                                            <Piece {...item} />
 
                                         </Draggable>
                                     )
@@ -423,13 +414,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             group.map((item:any, i:number) => {
                                                 item.left += ges["dx"];
                                                 item.top += ges["dy"];
-                                                const ref = index * groups[index].length + i;
-                                                componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
-
-                                                
-
-                                                    
-
 
                                                     // const options = {
                                                     //     enableVibrateFallback: true,
@@ -448,13 +432,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 group.map((item: any, i: number) => {
                                                     item.top = data[clickedPiece].top;
                                                     item.left = data[clickedPiece].left;
-                                                    const ref = data.indexOf(item);
-                                                    componentGroupRefs[ref]?.current?.updateCoords(item.left, item.top);
                                                 })
 
                                                 // remove pieces from data
                                                 data[clickedPiece].removed = true;
-                                                componentRefs[clickedPiece]?.current?.updateRemoved(true);
 
                                                 // add the piece to the group
                                                 group.push(data[clickedPiece]);
@@ -466,14 +447,11 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                                 group.map((item: any, i: number) => {
                                                     item.left = groups[clickedGroup][0].left;
                                                     item.top = groups[clickedGroup][0].top;
-                                                    const ref = data.indexOf(item);
-                                                    componentRefs[ref]?.current?.updateCoords(item.left, item.top);
-
                                                 })
                                                 
                                                 // merge the two groups
                                                 groups[index] = group.concat(groups[clickedGroup]);
-                                                groups.splice(clickedGroup, 1);
+                                                groups.splice(clickedGroup, 1); // their indices need to change ??
 
 
                                             }
@@ -492,8 +470,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                     >
                                         <View>
                                             {group.map((item:any, i:number) => {
-                                                const ref = data.indexOf(item);
-                                                return (<Piece {...item} ref={componentGroupRefs[ref]} />)
+                                                return (<Piece {...item} />)
                                             })}
                                         </View>
                                     </Draggable>
