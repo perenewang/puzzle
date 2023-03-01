@@ -1,18 +1,23 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { withSafeAreaInsets } from "react-native-safe-area-context";
+
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
 
     selectContainer: {
         flex: 2, // the number of columns you want to devide the screen into
         marginHorizontal: "auto",
+        width: width,
+        height: height
 
     },
 
     selectImages: {
-       width: "97%",
-       height: 200,
-       margin: 3,
+    //    width: "97%",
+        width: width/2.1,
+        height: width/2,
+        margin: 3,
     //    resizeMode: "contain",
     },
 
@@ -23,19 +28,19 @@ export const styles = StyleSheet.create({
     },
     
     previewContainer: {
+        // justifyContent: "center",
         alignItems: "center",
-        marginTop: 20
+        width: width,
+        height: height,
     },
 
     previewImage: {
         width: "90%",
-        height: "80%",
+        height: "70%",
+        marginTop: 20,
         resizeMode: "contain",
     },
 
-    level: {
-        backgroundColor: 'blue'
-    },
 
     stopwatch: {
         container: {

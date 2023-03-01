@@ -53,7 +53,7 @@ function WinScreen({ navigation, route }): JSX.Element {
                     height: h,
                     key: k,
                     p: p,
-                    top: "15%",
+                    top: height/6,
                     left: "auto",
                     img_src: img_src
                 }
@@ -120,46 +120,40 @@ const styles = StyleSheet.create({
     },
     completedText: {
         fontSize: width/10,
+        //fontSize: width/15,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',
         textShadowColor: '#ffffff',
-        top: "5%"
+        top: height/25
     },
 
-    imageContainer: {
-        borderRadius: 20,
-        overflow: 'hidden',
-        marginBottom: 20,
-    },
-    image: {
-        width: 200,
-        height: 200,
-        resizeMode: 'contain',
-    },
     resultText: {
-        fontSize: 24,
+        fontSize: width/18,
+        //fontSize: width/25,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',
         marginBottom: 20,
-        top: "60%"
+        top: height/1.55
     },
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        top: "80%"
+        top: height/1.5
     },
     button: {
         backgroundColor: '#008891',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 20,
-        marginHorizontal: 10,
+        marginHorizontal: 18,
     },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
+        fontSize: width/22
+        // fontSize: width / 22
     },
 });
 
