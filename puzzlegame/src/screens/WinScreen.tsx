@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { styles } from '../scripts/constants.js';
+// import { styles } from '../scripts/constants.js';
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    useColorScheme,
     View,
     Button,
     Image,
@@ -47,7 +44,7 @@ function WinScreen({ navigation, route }): JSX.Element {
                 const pieceProps = {
                     removed: false,
                     visible: false,
-                    z: -100,
+                    z: -1,
                     width: width,
                     height: height,
                     key: k,
@@ -67,39 +64,75 @@ function WinScreen({ navigation, route }): JSX.Element {
 
     const puzzle = gen();
 
-
-    
-// add picture to album
     return (
-        <SafeAreaView>
-            <View style={styles.winscreen}>
-                <Text style={{
-                    fontSize: 48,
-                    fontWeight: 'bold',
-                    color: 'green',
-                    textShadowColor: "'rgba(0, 0, 0, 0.4)'",
-                    textShadowOffset: { width: 5, height: 5 },
-                    textShadowRadius: 20,
-                    textAlign: 'center',
-                    padding: 10
-                }}>COMPLETED!!</Text>
-                {puzzle}
-                <Text style={{
-                    top: "70%",
-                }}>You completed this puzzle in {time} on level {lvl}</Text>
-                
+        <View style={styles.container}>
+            <Text style={styles.completedText}>COMPLETED!</Text>
+            <View style={styles.imageContainer}>
+                <Image source={img_src} style={styles.image} />
             </View>
-            <View style={styles.winButtonContainer}>
-                <TouchableOpacity style={styles.winButtons}>
-                    <Text>Share</Text>
+            {/* {puzzle} */}
+            <Text style={styles.resultText}>You completed this puzzle in 10 seconds on level easy</Text>
+            <View style={styles.buttonsContainer}>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Share</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.winButtons} >
-                    <Text>Back Home</Text>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Go Home</Text>
                 </TouchableOpacity>
-
             </View>
-        </SafeAreaView>
-    )
+        </View>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#dceaea',
+        padding: 20,
+    },
+    completedText: {
+        fontSize: 48,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center',
+        textShadowColor: '#ffffff',
+    },
+    
+    imageContainer: {
+        borderRadius: 20,
+        overflow: 'hidden',
+        marginBottom: 20,
+    },
+    image: {
+        width: 200,
+        height: 200,
+        resizeMode: 'contain',
+    },
+    resultText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    button: {
+        backgroundColor: '#008891',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        marginHorizontal: 10,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+});
+
 
 export default WinScreen;

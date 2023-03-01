@@ -48,7 +48,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Select" component={SelectScreen} />
         <Stack.Screen name="Preview" component={PreviewScreen} />
         <Stack.Screen name="Play" component={PlayScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Win" component={WinScreen} />
+        <Stack.Screen name="Win" component={WinScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
 
     </NavigationContainer>
