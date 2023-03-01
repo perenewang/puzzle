@@ -44,9 +44,9 @@ function App(): JSX.Element {
     >
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Album" component={AlbumScreen} /> 
-        <Stack.Screen name="Select" component={SelectScreen} />
-        <Stack.Screen name="Preview" component={PreviewScreen} />
+        <Stack.Screen name="Album" component={AlbumScreen} options={{ headerShown: false }} /> 
+        <Stack.Screen name="Select" component={SelectScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Preview" component={PreviewScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Play" component={PlayScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Win" component={WinScreen} options={{ headerShown: false }} />
       </Stack.Navigator>

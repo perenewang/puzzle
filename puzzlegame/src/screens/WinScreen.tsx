@@ -5,8 +5,6 @@ import {
     StyleSheet,
     Text,
     View,
-    Button,
-    Image,
     TouchableOpacity,
     Share,
     Alert,
@@ -94,9 +92,9 @@ function WinScreen({ navigation, route }): JSX.Element {
         <SafeAreaView style={styles.container}>
             <Text style={styles.completedText}>COMPLETED!</Text>
             {puzzle}
-            <Text style={styles.resultText}>You completed this puzzle in 10 seconds on level easy</Text>
+            <Text style={styles.resultText}>You completed this puzzle in {time} on level {lvl}</Text>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => sharePress()}>
+                <TouchableOpacity style={styles.button} onPress={sharePress}>
                     <Text style={styles.buttonText}>Share</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>

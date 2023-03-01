@@ -6,13 +6,12 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import {
     SafeAreaView,
-    ScrollView,
     Text,
     Image,
     FlatList,
     TouchableOpacity,
     ActionSheetIOS,
-    Alert
+    View
 } from 'react-native';
 
 const itemData = [
@@ -157,6 +156,16 @@ function SelectScreen({ navigation }): JSX.Element {
 
     return (
         <SafeAreaView style = {styles.selectContainer} >
+            <View style={styles.header} >
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('Home');
+                    }}>
+                    <Image style={{ height: 20, width: 20, alignSelf: "flex-start" }} source={require("../assets/icons/backArrow.png")} />
+                </TouchableOpacity>
+
+                <Text style={styles.headerText}> Select a Puzzle </Text>
+            </View>
             <FlatList
                 data={itemData}
                 numColumns={2}

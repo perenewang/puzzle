@@ -258,6 +258,15 @@ function PlayScreen({ navigation, route }): JSX.Element {
         return -1;
     }
 
+    const hapticFeedback = () => {
+        const options = {
+            enableVibrateFallback: true,
+            ignoreAndroidSystemSettings: false
+        };
+
+        ReactNativeHapticFeedback.trigger("impactLight", options);
+    }
+
 
     return (
         <SafeAreaView>
@@ -286,7 +295,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                         setIsStart(false);
                         setSettingsVisible(true);
                     }}>
-                    <Image style={{ height: 25, width: 25 }} source={require("../assets/icons/settings.png")} />
+                    <Image style={{ height: 30, width: 30 }} source={require("../assets/icons/settings.png")} />
                 </TouchableOpacity>
             </View>
             <View style={styles.settingsMenu}>
@@ -294,7 +303,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                 {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
             </View>
             {piecesVisible ? (
-                <View style={{borderWidth: 5, height: 550, width: 390, top: 1, }}> 
+                <View style={{ borderWidth: 5, height: 550, width: 390, top: 1, backgroundColor: "#b2b2b2" }}> 
                     {data.map((item, index) => {
                         if (!item.visible) {
                             
@@ -336,6 +345,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                     onDragRelease={(e, ges, bounds) => {
                                         item.left += ges["dx"];
                                         item.top += ges["dy"];
+
                                         
                                         let clicked = clickPieces(index);
                                         let clickedGroup = clickToGroup(index);
@@ -345,6 +355,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                             item.top = data[clicked].top;
                                             item.left = data[clicked].left;
+
+                                            hapticFeedback();
 
                                             // add the two pieces to groups as one group
                                             groups.push([data[index], data[clicked]]);
@@ -357,13 +369,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             temp.push(groupKeys.length);
                                             setGroupKeys(temp);
 
+                                            
 
-                                            // const options = {
-                                            //     enableVibrateFallback: true,
-                                            //     ignoreAndroidSystemSettings: false
-                                            // };
-
-                                            // ReactNativeHapticFeedback.trigger("impactLight", options);
                                         }
 
                                         
@@ -372,13 +379,14 @@ function PlayScreen({ navigation, route }): JSX.Element {
 
                                             item.top = groups[clickedGroup][0].top;
                                             item.left = groups[clickedGroup][0].left;
+
+                                            hapticFeedback();
                                             
                                             // add the the piece at index to group it clicked with
                                             groups[clickedGroup].push(item);
 
                                             // remove the piece from data
                                             item.removed = true;
-                                            
                                         }
 
                                         let temp = [...keys];
@@ -408,12 +416,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                         item.left += ges["dx"];
                                         item.top += ges["dy"];
                                         
-                                        // const options = {
-                                        //     enableVibrateFallback: true,
-                                        //     ignoreAndroidSystemSettings: false
-                                        // };
-
-                                        // ReactNativeHapticFeedback.trigger("impactLight", options);
                                     })
 
                                     let clickedPiece = clickToPiece(index);
@@ -427,11 +429,15 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             item.left = data[clickedPiece].left;
                                         })
 
+                                        hapticFeedback();
+
                                         // remove pieces from data
                                         data[clickedPiece].removed = true;
                                         
                                         // add the piece to the group
                                         group.push(data[clickedPiece]);
+
+                                        
                                     }
 
                                     else if (clickedGroup !== -1) {
@@ -441,6 +447,8 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             item.left = groups[clickedGroup][0].left;
                                             item.top = groups[clickedGroup][0].top;
                                         })
+
+                                        hapticFeedback();
                                         
                                         // merge the two groups
                                         groups[index] = group.concat(groups[clickedGroup]);

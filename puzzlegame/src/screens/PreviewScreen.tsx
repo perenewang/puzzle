@@ -4,12 +4,13 @@ import Images from '../assets/index.js'
 
 import {
     SafeAreaView,
-    Button,
     Image,
     ActionSheetIOS,
-    Linking,
     Share,
-    Alert
+    Alert,
+    View,
+    TouchableOpacity,
+    Text
 } from 'react-native';
 
 
@@ -73,12 +74,29 @@ function PreviewScreen({ navigation, route }): JSX.Element {
 
     return (
         <SafeAreaView style={styles.previewContainer}>
+            <View style={styles.header} >
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('Select');
+                    }}>
+                    <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
+                </TouchableOpacity>
+
+                <Text style={styles.headerText}> Preview </Text>
+            </View>
             <Image style={styles.previewImage} source={img_src} />
             {/* <Button onPress={()=>navigation.navigate('Win', { lvl: level, img_src: img_src, time: 0 })} title="win"/> */}
 
-            <Button onPress={levelPress} title={"Level: " + level}/>
-            <Button onPress={playPress} title="Play" />
-            <Button onPress={sharePress} title="Share" />
+            
+            <TouchableOpacity style={styles.button} onPress={levelPress}>
+                <Text style={styles.buttonText}>Level: {level}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={playPress}>
+                <Text style={styles.buttonText}>Play</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={sharePress}>
+                <Text style={styles.buttonText}>Share</Text>
+            </TouchableOpacity>
 
         </SafeAreaView>
     )
