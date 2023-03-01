@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { styles } from '../scripts/constants.js';
 import { Stopwatch } from 'react-native-stopwatch-timer';
-import {JigsawGenerator} from '../backend/puzzle-generator';
 import Draggable from 'react-native-draggable';
 import Images from '../assets/index.js'
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
@@ -18,6 +17,7 @@ import {
 
 import SettingsMenu from '../components/SettingsMenu'
 import Piece from '../components/Piece'
+import { JigsawGenerator } from '../backend/puzzle-generator';
 
 
 // TO DO:

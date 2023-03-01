@@ -78,17 +78,33 @@ export const styles = StyleSheet.create({
     },
 
     winscreen: {
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
+        height: "100%",
+        width: "100%",
 
     },
 
-    winImage: {
-        resizeMode: "contain",
-        height: "80%",
-        width: "70%",
-        
+    winButtons: {
+        backgroundColor: "blue",
+        padding: 10,
+        borderRadius: 5
+
     },
+
+    winButtonContainer: {
+        // height: "90%",
+        // width: "90%",
+        // top: "80%",
+        // left: "50%",
+        // position: "absolute",
+        borderColor: "black",
+        borderWidth: 5,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center" 
+
+    }
 
 
 })
