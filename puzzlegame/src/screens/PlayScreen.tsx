@@ -353,6 +353,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             item.removed = true;
                                             data[clicked].removed = true;
 
+                                            let temp = [...groupKeys];
+                                            temp.push(groupKeys.length);
+                                            setGroupKeys(temp);
+
 
                                             // const options = {
                                             //     enableVibrateFallback: true,
@@ -370,7 +374,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                                             item.left = groups[clickedGroup][0].left;
                                             
                                             // add the the piece at index to group it clicked with
-                                            groups[clickedGroup].push(data[index]);
+                                            groups[clickedGroup].push(item);
 
                                             // remove the piece from data
                                             item.removed = true;

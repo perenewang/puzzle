@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
 
     item: {
         flex: 1,
-        maxWidth: "50%", // 100% devided by the number of rows you want
+        maxWidth: "50%", // 100% divided by the number of rows you want
         alignItems: "center",
     },
     

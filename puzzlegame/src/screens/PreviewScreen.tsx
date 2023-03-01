@@ -48,7 +48,7 @@ function PreviewScreen({ navigation, route }): JSX.Element {
         try {
             const result = await Share.share({
                 message:
-                    '',
+                    'Play this puzzle!',
                 url: url_params
             });
             if (result.action === Share.sharedAction) {

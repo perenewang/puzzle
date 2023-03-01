@@ -7,7 +7,9 @@ import {
     View,
     Button,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Share,
+    Alert
 } from 'react-native';
 
 
@@ -64,23 +66,43 @@ function WinScreen({ navigation, route }): JSX.Element {
 
     const puzzle = gen();
 
+    const url_params = "puzzlegame://preview/" + img_src
+    const message = "I completed this puzzle in " + time + " on level " + lvl + ". Try and beat my time!"
+    const sharePress = async () => {
+        try {
+            const result = await Share.share({
+                message: message,
+                url: url_params
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error: any) {
+            Alert.alert(error.message);
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.completedText}>COMPLETED!</Text>
-            <View style={styles.imageContainer}>
-                <Image source={img_src} style={styles.image} />
-            </View>
-            {/* {puzzle} */}
+            {puzzle}
             <Text style={styles.resultText}>You completed this puzzle in 10 seconds on level easy</Text>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => sharePress()}>
                     <Text style={styles.buttonText}>Share</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
                     <Text style={styles.buttonText}>Go Home</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
+        
     );
 }
 
@@ -88,18 +110,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         backgroundColor: '#dceaea',
         padding: 20,
     },
     completedText: {
-        fontSize: 48,
+        fontSize: "20vh",
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',
         textShadowColor: '#ffffff',
+        top: "5%"
     },
-    
+
     imageContainer: {
         borderRadius: 20,
         overflow: 'hidden',
@@ -116,10 +139,12 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center',
         marginBottom: 20,
+        top: "60%"
     },
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
+        top: "80%"
     },
     button: {
         backgroundColor: '#008891',

@@ -75,7 +75,6 @@ function SelectScreen({ navigation }): JSX.Element {
                 skipBackup: true,
                 path: 'images',
             },
-            includeBase64: "true",
         };
         launchCamera(options, (response) => {
             console.log('Response = ', response);
