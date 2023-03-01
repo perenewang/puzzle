@@ -9,9 +9,11 @@ import {
     Image,
     TouchableOpacity,
     Share,
-    Alert
+    Alert,
+    Dimensions
 } from 'react-native';
 
+const { width, height } = Dimensions.get('window');
 
 import { JigsawGenerator } from '../backend/puzzle-generator';
 import Piece from '../components/Piece'
@@ -33,8 +35,8 @@ function WinScreen({ navigation, route }): JSX.Element {
     let xC = Math.floor((yC * 2) / 3);
 
     const gen = () => {
-        let width = 300, height = 400;
-        const out = new JigsawGenerator({ width: width, height: height, xCount: xC, yCount: yC, radius: 20, fixedPattern: false });
+        let w = width-40, h = height/1.75;
+        const out = new JigsawGenerator({ width: w, height: h, xCount: xC, yCount: yC, radius: 20, fixedPattern: false });
         let cells = out["cells"];
         let pieces = [];
 
@@ -47,8 +49,8 @@ function WinScreen({ navigation, route }): JSX.Element {
                     removed: false,
                     visible: false,
                     z: -1,
-                    width: width,
-                    height: height,
+                    width: w,
+                    height: h,
                     key: k,
                     p: p,
                     top: "15%",
@@ -106,6 +108,8 @@ function WinScreen({ navigation, route }): JSX.Element {
     );
 }
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     completedText: {
-        fontSize: "20vh",
+        fontSize: width/10,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',
