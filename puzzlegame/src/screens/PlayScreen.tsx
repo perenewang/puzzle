@@ -264,7 +264,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
             ignoreAndroidSystemSettings: false
         };
 
-        ReactNativeHapticFeedback.trigger("impactLight", options);
+        ReactNativeHapticFeedback.trigger("impactMedium", options);
     }
 
 
