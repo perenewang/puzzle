@@ -27,7 +27,7 @@ import { JigsawGenerator } from '../backend/puzzle-generator';
 //      - quit goes to home
 //      - restart resets the puzzle
 //      - instructions popup
-// - instructions
+// - instructions on first page too?
 
 
 let data: any[] = [];
@@ -290,18 +290,18 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     }}>
                     <Image style={{ height: 35, width: 25 }} source={require("../assets/icons/piecesBag.png")} />
                 </TouchableOpacity>
-                {/* <TouchableOpacity
+                <TouchableOpacity
                     onPress={() => {
                         setIsStart(false);
                         setSettingsVisible(true);
                     }}>
                     <Image style={{ height: 30, width: 30 }} source={require("../assets/icons/settings.png")} />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </View>
-            {/* <View style={styles.settingsMenu}>
+            <View style={styles.settingsMenu}>
                 {settingsVisible ? <SettingsMenu /> : null}
                 {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
-            </View> */}
+            </View>
             {piecesVisible ? (
                 <View style={{ borderWidth: 5, height: 550, width: 390, top: 1, backgroundColor: "#b2b2b2" }}> 
                     {data.map((item, index) => {
