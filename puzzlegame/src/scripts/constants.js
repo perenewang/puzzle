@@ -114,7 +114,14 @@ export const styles = StyleSheet.create({
 
     closeButton: {
         
-        
+        backgroundColor: 'red',
+        paddingVertical: 5,
+        width: width / 4.5,
+        borderRadius: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+        marginLeft: 10,
 
     },
 

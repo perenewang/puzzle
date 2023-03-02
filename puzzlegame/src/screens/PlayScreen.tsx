@@ -21,13 +21,13 @@ import { JigsawGenerator } from '../backend/puzzle-generator';
 
 
 // TO DO:
-// - haptic and sound feedback
+// - sound feedback
 // - settings popup
 //      - able to turn on/off haptic and sound?
 //      - quit goes to home
 //      - restart resets the puzzle
 //      - instructions popup
-// - CSS
+// - instructions
 
 
 let data: any[] = [];
@@ -275,7 +275,7 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     onPress={() => {
                         navigation.navigate('Preview', { img_src: img_src });
                     }}>
-                    <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
+                    <Image style={{ height: 20, width: 20, alignSelf: "flex-start" }} source={require("../assets/icons/backArrow.png")} />
                 </TouchableOpacity>
                 <Text style={{color:"white", fontSize:20}}>{lvl}</Text>
                 <Stopwatch start={isStart} options={styles.stopwatch} getTime={(time:number) => {
@@ -290,18 +290,18 @@ function PlayScreen({ navigation, route }): JSX.Element {
                     }}>
                     <Image style={{ height: 35, width: 25 }} source={require("../assets/icons/piecesBag.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={() => {
                         setIsStart(false);
                         setSettingsVisible(true);
                     }}>
                     <Image style={{ height: 30, width: 30 }} source={require("../assets/icons/settings.png")} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
-            <View style={styles.settingsMenu}>
+            {/* <View style={styles.settingsMenu}>
                 {settingsVisible ? <SettingsMenu /> : null}
                 {settingsVisible ? <Button title="X" onPress={() => { pause(); setSettingsVisible(false); }} /> : null}
-            </View>
+            </View> */}
             {piecesVisible ? (
                 <View style={{ borderWidth: 5, height: 550, width: 390, top: 1, backgroundColor: "#b2b2b2" }}> 
                     {data.map((item, index) => {
@@ -332,7 +332,10 @@ function PlayScreen({ navigation, route }): JSX.Element {
                             )
                         }
                     })}
-                    <Button title="X" onPress={() => setPiecesVisible(false)} /> 
+                    {/* <Button title="X" onPress={() => setPiecesVisible(false)} />  */}
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setPiecesVisible(false)}>
+                        <Text style={styles.buttonText}>CLOSE</Text>
+                    </TouchableOpacity>
                 </View>
                 ) : (
                 <View>
