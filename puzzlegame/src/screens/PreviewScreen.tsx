@@ -4,12 +4,13 @@ import Images from '../assets/index.js'
 
 import {
     SafeAreaView,
-    Button,
     Image,
     ActionSheetIOS,
-    Linking,
     Share,
-    Alert
+    Alert,
+    View,
+    TouchableOpacity,
+    Text
 } from 'react-native';
 
 
@@ -48,7 +49,7 @@ function PreviewScreen({ navigation, route }): JSX.Element {
         try {
             const result = await Share.share({
                 message:
-                    '',
+                    'Play this puzzle!',
                 url: url_params
             });
             if (result.action === Share.sharedAction) {
@@ -73,11 +74,29 @@ function PreviewScreen({ navigation, route }): JSX.Element {
 
     return (
         <SafeAreaView style={styles.previewContainer}>
-            <Image style={styles.previewImage} source={img_src} />
+            <View style={styles.header} >
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('Select');
+                    }}>
+                    <Image style={{ height: 20, width: 20 }} source={require("../assets/icons/backArrow.png")} />
+                </TouchableOpacity>
 
-            <Button style={styles.level} onPress={levelPress} title={"Level: " + level}/>
-            <Button style={styles.level} onPress={playPress} title="Play" />
-            <Button style={styles.level} onPress={sharePress} title="Share" />
+                <Text style={styles.headerText}> Preview </Text>
+            </View>
+            <Image style={styles.previewImage} source={img_src} />
+            {/* <Button onPress={()=>navigation.navigate('Win', { lvl: level, img_src: img_src, time: 0 })} title="win"/> */}
+
+            
+            <TouchableOpacity style={styles.button} onPress={levelPress}>
+                <Text style={styles.buttonText}>Level: {level}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={playPress}>
+                <Text style={styles.buttonText}>Play</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={sharePress}>
+                <Text style={styles.buttonText}>Share</Text>
+            </TouchableOpacity>
 
         </SafeAreaView>
     )

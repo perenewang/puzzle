@@ -13,10 +13,11 @@ import * as SVG from "react-native-svg";
 //   top : number           - Top displacement
 //   left : number          - Left displacement
 //   img_src: string        - String defining path of image source
-class Piece extends Component<{}, {visible: boolean, z : number, width : number, height : number, key : string, path : string, top : number, left : number, img_src : string}> {
+class Piece extends Component<{}, {removed: boolean, visible: boolean, z : number, width : number, height : number, key : string, path : string, top : number, left : number, img_src : string}> {
     constructor(props : any){
         super(props);
         this.state= {
+            removed: props.removed,
             visible: props.visible,
             z: props.z,
             width: props.width,
@@ -32,16 +33,16 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
     }
 
     componentDidMount() {
-        console.log("Piece has mounted.")
+        // console.log("Piece has mounted.")
     }
 
     componentWillUnmount() {
-        console.log("Piece is unmounting.")
+        // console.log("Piece is unmounting.")
     }
 
     componentDidUpdate() {
-        console.log("Piece has updated.")
-        console.log(this.state.top, this.state.left);
+        // console.log("Piece has updated.")
+        // console.log(this.state.top, this.state.left);
     }
 
     getVis = () => {
@@ -68,9 +69,16 @@ class Piece extends Component<{}, {visible: boolean, z : number, width : number,
 
         return true;
     }
+
+    updateRemoved = (r : boolean) => {
+        this.setState({
+            removed: r
+        })
+    }
     
-    updateVis(vis: boolean) {
+    updateVis = (vis: boolean) => {
         this.state = {
+            removed: this.state.removed,
             visible: vis,
             z: this.state.z,
             width: this.state.width,
