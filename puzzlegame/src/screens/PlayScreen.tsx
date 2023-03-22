@@ -28,6 +28,11 @@ import { JigsawGenerator } from '../backend/puzzle-generator';
 //      - restart resets the puzzle
 //      - instructions popup
 // - instructions on first page too?
+// - tutorial?
+// - images
+//      - use firebase for defaults
+//      - figure out how to share with camera roll photos
+// - fix componentWillRecieveProps warning
 
 
 let data: any[] = [];
@@ -332,7 +337,6 @@ function PlayScreen({ navigation, route }): JSX.Element {
                             )
                         }
                     })}
-                    {/* <Button title="X" onPress={() => setPiecesVisible(false)} />  */}
                     <TouchableOpacity style={styles.closeButton} onPress={() => setPiecesVisible(false)}>
                         <Text style={styles.buttonText}>CLOSE</Text>
                     </TouchableOpacity>
